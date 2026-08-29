@@ -1,0 +1,5 @@
+# PathoPanel
+User-agent: *
+Allow: /
+
+Sitemap: https://pathnixon-dev.github.io/pathopanel/sitemap.xml
