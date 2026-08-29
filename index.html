@@ -79,7 +79,11 @@ header{
   max-width:1180px;margin:0 auto;padding:18px 24px;
   display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
 }
-.wordmark{font-family:Spectral;font-size:25px;font-weight:600}
+.brand{background:none;border:none;padding:0;margin:0;text-align:left;cursor:pointer;
+  border-radius:var(--r)}
+.brand:hover .wordmark{color:var(--hem)}
+.brand:hover .wordmark em{color:var(--hem-deep)}
+.wordmark{font-family:Spectral;font-size:25px;font-weight:600;transition:color .12s}
 .wordmark em{font-style:normal;color:var(--hem)}
 .tagline{font-size:13.5px;color:var(--muted);letter-spacing:0.02em}
 .mast .spacer{flex:1}
@@ -258,14 +262,14 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding-top:16px;
 <body>
 <header>
   <div class="mast">
-    <div>
+    <button class="brand" id="homeBtn" title="Back to the home page">
       <div class="wordmark">Patho<em>Panel</em></div>
       <div class="tagline">Morphology first. Then the stain that answers the question.</div>
-    </div>
+    </button>
     <div class="spacer"></div>
+    <button class="ghost" id="resetBtn">Start a case</button>
     <button class="ghost" id="aboutBtn">About and references</button>
     <button class="ghost" id="creatorBtn">Creator</button>
-    <button class="ghost" id="resetBtn" hidden>Start a new case</button>
   </div>
 </header>
 
@@ -6116,13 +6120,13 @@ function showPage(id){
   if(PAGES.every(p => $(p).hidden)) priorView = $("caseView").hidden ? "intro" : "case";
   $("introView").hidden = true; $("caseView").hidden = true;
   PAGES.forEach(p => $(p).hidden = (p !== id));
-  window.scrollTo(0,0);
+  syncHeader(); window.scrollTo(0,0);
 }
 function hidePages(){
   PAGES.forEach(p => $(p).hidden = true);
   if(priorView === "case"){ $("caseView").hidden = false; }
   else { $("introView").hidden = false; }
-  window.scrollTo(0,0);
+  syncHeader(); window.scrollTo(0,0);
 }
 const showAbout = () => showPage("aboutView");
 $("aboutBtn").onclick   = () => ($("aboutView").hidden ? showPage("aboutView") : hidePages());
@@ -6132,11 +6136,29 @@ $("creatorBack").onclick = hidePages;
 $("ddxAbout").onclick = showAbout;
 $("introAbout").onclick = showAbout;
 
-$("startBtn").onclick=()=>{
-  $("introView").hidden=true; PAGES.forEach(p=>$(p).hidden=true); $("caseView").hidden=false; $("resetBtn").hidden=false;
-  reset(); window.scrollTo(0,0);
-};
-$("resetBtn").onclick=()=>{ PAGES.forEach(p=>$(p).hidden=true); $("caseView").hidden=false; reset(); window.scrollTo(0,0); };
+function enterCase(){
+  $("introView").hidden = true;
+  PAGES.forEach(p => $(p).hidden = true);
+  $("caseView").hidden = false;
+  reset(); syncHeader(); window.scrollTo(0,0);
+}
+/* The same header button starts a case from anywhere and restarts one you are in,
+   so its label has to say which it is about to do. */
+function syncHeader(){
+  $("resetBtn").textContent = ($("caseView").hidden || PAGES.some(p => !$(p).hidden))
+    ? "Start a case" : "Start a new case";
+}
+function goHome(){
+  PAGES.forEach(p => $(p).hidden = true);
+  $("caseView").hidden = true;
+  $("introView").hidden = false;
+  priorView = "intro";
+  syncHeader(); window.scrollTo(0,0);
+}
+$("homeBtn").onclick = goHome;
+$("startBtn").onclick = enterCase;
+$("resetBtn").onclick = enterCase;
+syncHeader();
 </script>
 </body>
 </html>
