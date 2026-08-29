@@ -503,17 +503,14 @@ const QUESTIONS = [
  /* mods lists the organ modules a question belongs to. "*" means every module. */
  {id:"site", mods:"*", text:"What is the anatomical site?", short:"Site",
   opts:[["cns","Central nervous system, meninges or cranial nerve"],
-        ["sup","Skin or subcutis"],
-        ["deep","Deep soft tissue of limb or trunk"],
+        ["deep","Soft tissue of limb, trunk or subcutis"],
         ["retro","Retroperitoneum, abdominal cavity or pelvis"],
-        ["gi","Wall of the gastrointestinal tract"],
-        ["visc","Viscus or lung"],
         ["bone","Bone"],
         ["gyn","Female genital tract, ovary or placenta"],
         ["breast","Breast"],
         ["gitract","Gastrointestinal tract, appendix or anus"],
         ["hn","Head and neck, salivary gland or sinonasal tract"],
-        ["skin","Skin"],
+        ["skin","Skin, including subcutaneous lumps"],
         ["lung","Lung, pleura or mediastinum"],
         ["gu","Kidney, bladder, prostate or testis"],
         ["hpb","Liver, pancreas, gallbladder or bile duct"],
@@ -1501,7 +1498,7 @@ const ENTITIES = [
     clue:{glands:1,none:0.5},
     hist:{priorca:1.4,none:0.5}}},
 
-{id:"sarcca", name:"Sarcomatoid carcinoma", grp:"Epithelial", prior:0.5, mods:["st"],
+{id:"sarcca", name:"Sarcomatoid carcinoma", grp:"Epithelial", prior:0.5, mods:["st","gi_","lung"],
  morph:"Malignant spindle cells, sometimes with a recognisable conventional carcinoma or an in situ component.",
  mol:"Follows the parent carcinoma.",
  f:{site:{cns:0.15,sup:0.7,deep:0.4,retro:0.4,gi:0.5,visc:1,bone:0.2},
@@ -1516,7 +1513,7 @@ const ENTITIES = [
     clue:{insitu:1,none:0.6},
     hist:{priorca:0.7,none:0.7,radiation:0.2}}},
 
-{id:"melanoma", name:"Melanoma, including spindle cell and desmoplastic", grp:"Melanocytic", prior:1.0, mods:["st","cns","gi_","hn","skin","endo"],
+{id:"melanoma", name:"Melanoma, including spindle cell and desmoplastic", grp:"Melanocytic", prior:1.0, mods:["st","cns","gi_","hn","skin","endo","lung"],
  morph:"Sheets or fascicles of atypical cells, macronucleoli, pigment variable, junctional component in primaries.",
  mol:"BRAF, NRAS, NF1; desmoplastic melanoma carries a high mutation burden.",
  f:{site:{cns:0.7,sup:1,deep:0.4,retro:0.3,gi:0.4,visc:0.5,bone:0.3},
@@ -1546,7 +1543,7 @@ const ENTITIES = [
     inflam:{mast:0.7,none:0.6}, clue:{none:0.7,psammoma:0.6,glands:0.7},
     hist:{none:0.95}}},
 
-{id:"lms", name:"Leiomyosarcoma", grp:"Smooth muscle", prior:1.0, mods:["st","gyn","gu"],
+{id:"lms", name:"Leiomyosarcoma", grp:"Smooth muscle", prior:1.0, mods:["st","gyn","gu","gi_","lung"],
  morph:"Intersecting fascicles at right angles, eosinophilic fibrillary cytoplasm, cigar-shaped nuclei, perinuclear vacuoles.",
  mol:"Complex karyotype; TP53 and RB1 alterations.",
  f:{site:{cns:0.05,sup:0.5,deep:0.9,retro:1.2,gi:0.6,visc:0.7,bone:0.1},
@@ -1630,7 +1627,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{none:0.95},
     hist:{none:0.95}}},
 
-{id:"imt", name:"Inflammatory myofibroblastic tumour", grp:"Fibroblastic and myofibroblastic", prior:0.5, mods:["st","gyn","lung"],
+{id:"imt", name:"Inflammatory myofibroblastic tumour", grp:"Fibroblastic and myofibroblastic", prior:0.5, mods:["st","gyn","lung","gi_"],
  morph:"Loose myofibroblasts in an oedematous background with a dense plasma cell and lymphocyte infiltrate.",
  mol:"ALK rearrangement in about half; ROS1 and NTRK in some.",
  f:{site:{cns:0.1,sup:0.2,deep:0.5,retro:0.9,gi:0.5,visc:1,bone:0.05},
@@ -1771,7 +1768,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{none:0.95},
     hist:{none:0.95}}},
 
-{id:"arms", name:"Alveolar rhabdomyosarcoma", grp:"Skeletal muscle", prior:0.4, mods:["st"],
+{id:"arms", name:"Alveolar rhabdomyosarcoma", grp:"Skeletal muscle", prior:0.4, mods:["st","lung"],
  morph:"Round cells in nests separated by fibrous septa with loss of central cohesion, multinucleated wreath-like giant cells.",
  mol:"PAX3::FOXO1 or PAX7::FOXO1 fusion.",
  f:{site:{cns:0.1,sup:0.3,deep:1,retro:0.5,gi:0.1,visc:0.6,bone:0.2},
@@ -1785,7 +1782,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{strapcells:0.8,none:0.8},
     hist:{none:0.95}}},
 
-{id:"erms", name:"Embryonal rhabdomyosarcoma", grp:"Skeletal muscle", prior:0.5, mods:["st","hn"],
+{id:"erms", name:"Embryonal rhabdomyosarcoma", grp:"Skeletal muscle", prior:0.5, mods:["st","hn","lung"],
  morph:"Alternating cellular and myxoid zones, cambium layer beneath mucosa, scattered rhabdomyoblasts with eosinophilic cytoplasm.",
  mol:"No defining fusion; loss of heterozygosity at 11p15.5.",
  f:{site:{cns:0.1,sup:0.3,deep:0.8,retro:0.6,gi:0.3,visc:1,bone:0.1},
@@ -1813,7 +1810,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{rhabdoid:0.5,none:0.8},
     hist:{none:0.95}}},
 
-{id:"lbl", name:"Lymphoblastic lymphoma", grp:"Haematolymphoid", prior:0.4, mods:["st","bone"],
+{id:"lbl", name:"Lymphoblastic lymphoma", grp:"Haematolymphoid", prior:0.4, mods:["st","bone","lung"],
  morph:"Diffuse infiltrate of blasts with fine chromatin, indistinct nucleoli, brisk mitoses and apoptosis, single-file infiltration of fat.",
  mol:"Immature B or T phenotype; correlate with flow cytometry.",
  f:{site:{cns:0.3,sup:0.5,deep:0.8,retro:0.9,gi:0.4,visc:0.6,bone:0.9},
@@ -1897,7 +1894,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{none:0.95},
     hist:{none:0.9,nerve_nf1:0.4}}},
 
-{id:"granular", name:"Granular cell tumour", grp:"Schwannian differentiation", prior:0.4, mods:["st","breast","gi_","hn","skin"],
+{id:"granular", name:"Granular cell tumour", grp:"Schwannian differentiation", prior:0.4, mods:["st","breast","gi_","hn","skin","lung"],
  morph:"Sheets and nests of large cells with abundant coarsely granular eosinophilic cytoplasm and small dark nuclei, often with florid pseudoepitheliomatous hyperplasia of the overlying epithelium.",
  mol:"Inactivating ATP6AP1 or ATP6AP2 alterations.",
  f:{site:{cns:0.05,sup:1.2,deep:0.6,retro:0.1,gi:0.3,visc:0.6,bone:0.02},
@@ -1925,9 +1922,9 @@ const ENTITIES = [
     inflam:{none:0.7,lymphoplasmacytic:0.4}, clue:{none:0.9},
     hist:{none:0.95,trauma:0.5}}},
 
-{id:"glomus", name:"Glomus tumour", grp:"Perivascular", prior:0.3, mods:["st","skin"],
- morph:"Sheets and cuffs of strikingly uniform rounded cells with sharp cell borders and central round nuclei, arranged around capillary-sized vessels.",
- mol:"NOTCH gene fusions; BRAF in a subset.",
+{id:"glomus", name:"Glomus tumour", grp:"Perivascular", prior:0.3, mods:["st","skin","gi_"],
+ morph:"Sheets and cuffs of strikingly uniform rounded cells with sharp cell borders and central round nuclei, arranged around capillary-sized vessels. In the stomach it sits in the muscularis propria of the antrum and mimics a gastrointestinal stromal tumour or a neuroendocrine tumour on low power.",
+ mol:"NOTCH gene fusions; BRAF in a subset. Almost always benign in the stomach, though rare malignant examples occur.",
  f:{site:{cns:0.02,sup:1.6,deep:0.3,retro:0.05,gi:0.3,visc:0.2,bone:0.05},
     age:{peds:0.2,ya:1.2,mid:1,old:0.5},
     shape:{epithelioid:1.2,clear:0.4,spindle:0.3},
@@ -2037,7 +2034,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{glands:0.6,none:0.7},
     hist:{none:0.95}}},
 
-{id:"rcc", name:"Metastatic clear cell renal cell carcinoma", grp:"Epithelial", prior:0.6, mods:["st","cns","bone","gu","hpb","endo"],
+{id:"rcc", name:"Metastatic clear cell renal cell carcinoma", grp:"Epithelial", prior:0.6, mods:["st","cns","bone","gu","hpb","endo","lung"],
  morph:"Nests of cells with clear cytoplasm and distinct membranes in a delicate capillary network. The main mimic of haemangioblastoma in the cerebellum.",
  mol:"VHL alteration and 3p loss, which is why it and haemangioblastoma look alike.",
  f:{site:{cns:0.8,sup:0.2,deep:0.2,retro:0.6,gi:0.1,visc:0.6,bone:0.6},
@@ -2065,7 +2062,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{psammoma:0.6,none:0.7},
     hist:{none:0.95}}},
 
-{id:"leiomyoma", name:"Leiomyoma", grp:"Smooth muscle", prior:0.9, mods:["st","gyn","gi_"],
+{id:"leiomyoma", name:"Leiomyoma", grp:"Smooth muscle", prior:0.9, mods:["st","gyn","gi_","lung"],
  morph:"Intersecting fascicles of bland smooth muscle with cigar-shaped nuclei, no necrosis and no appreciable mitotic activity.",
  mol:"MED12 and HMGA2 alterations in uterine tumours.",
  f:{site:{cns:0.02,sup:0.6,deep:0.5,retro:0.6,gi:0.8,visc:0.9,bone:0.02},
@@ -2080,7 +2077,7 @@ const ENTITIES = [
     hist:{none:0.95}}},
 
 /* ---- soft tissue, added from the bone and soft tissue chapter ---- */
-{id:"lipoma", name:"Lipoma", grp:"Adipocytic", prior:1.4, mods:["st"],
+{id:"lipoma", name:"Lipoma", grp:"Adipocytic", prior:1.4, mods:["st","skin"],
  morph:"Mature adipocytes of uniform size with no atypical stromal cells and no lipoblasts.",
  mol:"HMGA2 rearrangement at 12q14-15. No MDM2 amplification, which is the whole point.",
  f:{site:{cns:0.02,sup:1.4,deep:0.9,retro:0.4,gi:0.1,visc:0.2,bone:0.02},
@@ -2108,7 +2105,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{lipoblasts:1.8,none:0.5},
     hist:{none:0.95}}},
 
-{id:"scpl", name:"Spindle cell and pleomorphic lipoma", grp:"Adipocytic", prior:0.5, mods:["st"],
+{id:"scpl", name:"Spindle cell and pleomorphic lipoma", grp:"Adipocytic", prior:0.5, mods:["st","skin"],
  morph:"Bland spindle cells, ropey collagen and floret-like multinucleate cells in a fatty background, on the neck, shoulder or back of a middle-aged man.",
  mol:"13q14 deletion with loss of RB1.",
  f:{site:{cns:0.02,sup:1.6,deep:0.3,retro:0.05,gi:0.02,visc:0.05,bone:0.02},
@@ -2122,7 +2119,7 @@ const ENTITIES = [
     inflam:{mast:0.8,none:0.6}, clue:{none:0.85,lipoblasts:0.3},
     hist:{none:0.95}}},
 
-{id:"myxofib", name:"Myxofibrosarcoma", grp:"Fibroblastic", prior:0.7, mods:["st"],
+{id:"myxofib", name:"Myxofibrosarcoma", grp:"Fibroblastic", prior:0.7, mods:["st","skin"],
  morph:"Multinodular myxoid tumour with coarse curvilinear vessels and pleomorphic cells cuffing them, plus vacuolated pseudolipoblasts.",
  mol:"Complex karyotype with no defining alteration, which is why the diagnosis rests on morphology.",
  f:{site:{cns:0.02,sup:1.2,deep:1,retro:0.2,gi:0.05,visc:0.1,bone:0.05},
@@ -2178,7 +2175,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{none:0.9},
     hist:{none:0.95}}},
 
-{id:"nsmyxoma", name:"Nerve sheath myxoma", grp:"Peripheral nerve sheath", prior:0.15, mods:["st"],
+{id:"nsmyxoma", name:"Nerve sheath myxoma", grp:"Peripheral nerve sheath", prior:0.15, mods:["st","skin"],
  morph:"Multilobulated superficial myxoid nodules containing bland ringed and epithelioid Schwann cells, on the hand or the head and neck.",
  mol:"No defining alteration. Distinct from cellular neurothekeoma, which is S100 negative.",
  f:{site:{cns:0.05,sup:1.8,deep:0.2,retro:0.02,gi:0.02,visc:0.05,bone:0.02},
@@ -2206,7 +2203,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{none:0.9},
     hist:{none:0.9}}},
 
-{id:"myopericytoma", name:"Myopericytoma", grp:"Perivascular", prior:0.2, mods:["st"],
+{id:"myopericytoma", name:"Myopericytoma", grp:"Perivascular", prior:0.2, mods:["st","skin"],
  morph:"Bland ovoid myoid cells arranged in concentric perivascular whorls around numerous small vessels.",
  mol:"PDGFRB alteration.",
  f:{site:{cns:0.02,sup:1.6,deep:0.4,retro:0.05,gi:0.05,visc:0.1,bone:0.02},
@@ -2220,7 +2217,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{none:0.95},
     hist:{none:0.95}}},
 
-{id:"tgct", name:"Tenosynovial giant cell tumour", grp:"Synovial", prior:0.7, mods:["st"],
+{id:"tgct", name:"Tenosynovial giant cell tumour", grp:"Synovial", prior:0.7, mods:["st","skin"],
  morph:"Mixture of mononuclear histiocytoid cells, osteoclast-type giant cells, foamy macrophages and haemosiderin, arising from a joint or tendon sheath.",
  mol:"CSF1 rearrangement, usually COL6A3::CSF1, driving a landscape effect that recruits the other cells.",
  f:{site:{cns:0.02,sup:1.2,deep:1,retro:0.1,gi:0.02,visc:0.05,bone:0.3},
@@ -2234,7 +2231,7 @@ const ENTITIES = [
     inflam:{lymphoplasmacytic:0.5,none:0.7}, clue:{giantcells:1.8,none:0.4},
     hist:{none:0.95}}},
 
-{id:"afh", name:"Angiomatoid fibrous histiocytoma", grp:"Uncertain differentiation", prior:0.25, mods:["st"],
+{id:"afh", name:"Angiomatoid fibrous histiocytoma", grp:"Uncertain differentiation", prior:0.25, mods:["st","skin"],
  morph:"Circumscribed nodule with a thick fibrous pseudocapsule, a peripheral lymphoid cuff with germinal centres, and blood-filled pseudovascular spaces.",
  mol:"EWSR1::CREB1 most often, also EWSR1::ATF1 and FUS::ATF1.",
  f:{site:{cns:0.02,sup:1.6,deep:0.5,retro:0.05,gi:0.02,visc:0.05,bone:0.02},
@@ -2304,7 +2301,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{rhabdoid:2,none:0.3},
     hist:{none:0.95}}},
 
-{id:"ehe", name:"Epithelioid haemangioendothelioma", grp:"Vascular", prior:0.3, mods:["st","bone","hpb"],
+{id:"ehe", name:"Epithelioid haemangioendothelioma", grp:"Vascular", prior:0.3, mods:["st","bone","hpb","lung"],
  morph:"Cords and nests of epithelioid endothelial cells with intracytoplasmic vacuoles that sometimes contain a red cell, set in a myxohyaline matrix.",
  mol:"WWTR1::CAMTA1 fusion in most; YAP1::TFE3 in a minority.",
  f:{site:{cns:0.05,sup:0.6,deep:0.9,retro:0.3,gi:0.2,visc:0.9,bone:0.6},
@@ -2318,7 +2315,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{none:0.9},
     hist:{none:0.95}}},
 
-{id:"pmhe", name:"Pseudomyogenic haemangioendothelioma", grp:"Vascular", prior:0.15, mods:["st"],
+{id:"pmhe", name:"Pseudomyogenic haemangioendothelioma", grp:"Vascular", prior:0.15, mods:["st","skin"],
  morph:"Plump spindled and epithelioid cells with abundant deeply eosinophilic rhabdomyoblast-like cytoplasm, often multifocal in one limb of a young man.",
  mol:"SERPINE1::FOSB fusion.",
  f:{site:{cns:0.02,sup:1.2,deep:1,retro:0.05,gi:0.02,visc:0.05,bone:0.5},
@@ -2332,7 +2329,7 @@ const ENTITIES = [
     inflam:{lymphoplasmacytic:0.5,none:0.7}, clue:{none:0.9},
     hist:{none:0.95}}},
 
-{id:"khe", name:"Kaposiform haemangioendothelioma", grp:"Vascular", prior:0.15, mods:["st"],
+{id:"khe", name:"Kaposiform haemangioendothelioma", grp:"Vascular", prior:0.15, mods:["st","skin"],
  morph:"Infiltrating nodules of spindle cells with slit-like vessels alongside more rounded capillary lobules, in an infant, often with consumptive coagulopathy.",
  mol:"No defining fusion. The Kasabach-Merritt phenomenon is the clinical reason it matters.",
  f:{site:{cns:0.05,sup:1.4,deep:0.8,retro:0.3,gi:0.05,visc:0.2,bone:0.05},
@@ -2374,7 +2371,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{strapcells:1.2,none:0.6},
     hist:{none:0.95}}},
 
-{id:"ebvsmt", name:"EBV-associated smooth muscle tumour", grp:"Smooth muscle", prior:0.15, mods:["st"],
+{id:"ebvsmt", name:"EBV-associated smooth muscle tumour", grp:"Smooth muscle", prior:0.15, mods:["st","gi_","lung"],
  morph:"Intersecting fascicles of smooth muscle with brisk mitoses but no atypical forms, often with intratumoural lymphocytes and primitive round cell areas, in an immunosuppressed patient.",
  mol:"Driven by Epstein-Barr virus. EBER in situ hybridisation is strongly and diffusely nuclear.",
  f:{site:{cns:0.4,sup:0.3,deep:0.6,retro:0.5,gi:0.5,visc:1,bone:0.05},
@@ -3738,7 +3735,7 @@ const ENTITIES = [
  morph:"Densely cellular lobules of plump endothelial cells forming small capillary lumina in the proliferative phase, becoming progressively more vascular and then fibrofatty as it involutes.",
  mol:"Uniquely expresses GLUT1 among the vascular tumours of infancy, which is what separates it from congenital haemangioma and from vascular malformations.",
  f:{skloc:{dermis:2.4,deep:1,epidermis:0.3,junction:0.1,adnexal:0.05}, age:{peds:2.8,ya:0.1,mid:0.03,old:0.02}, skcell:{endothelial:3,spindle:0.5}, skarch:{nodule:2.4,perivascular:0.6}, sksymmetry:{symmetrical:2,na:1.2,asymmetrical:0.15}, skstroma:{none:1.6}, skclue:{none:1.8}, necrosis:{absent:0.95,present:0.1}, mitoses:{brisk:1,low:0.9}, skhist:{none:1.8}}},
-{id:"fhi", name:"Fibrous hamartoma of infancy", grp:"Fibroblastic, paediatric", prior:0.12, mods:["st"],
+{id:"fhi", name:"Fibrous hamartoma of infancy", grp:"Fibroblastic, paediatric", prior:0.12, mods:["st","skin"],
  morph:"Organoid triphasic lesion of fibrous trabeculae, immature round or stellate cells in myxoid nests, and mature fat, in the axilla or upper trunk of an infant.",
  mol:"EGFR exon 20 insertion or duplication. Benign, and cured by excision.",
  f:{site:{cns:0.02,sup:2.4,deep:0.9,retro:0.05,gi:0.02,visc:0.05,bone:0.02,gyn:0.02,breast:0.05}, age:{peds:2.8,ya:0.1,mid:0.03,old:0.02}, shape:{spindle:1.8,srbc:0.8,clear:0.5,biphasic:0.9}, arch:{fascicular:1.4,patternless:1,sheets:0.6}, stroma:{myxoid:1.6,collagen:1.4,adipocytic:1.6,minimal:0.3}, vessels:{unremarkable:1}, nuclei:{bland:2.4}, necrosis:{absent:0.99,present:0.02}, mitoses:{low:1.4,brisk:0.05}, inflam:{none:0.9}, clue:{none:1.2}, hist:{none:1.6}}},
@@ -3834,7 +3831,7 @@ const ENTITIES = [
  f:{cvsite:{smallvessel:2.4,mediumartery:0.9,largeartery:0.2,myocardium:0.4,valve:0.05,cardiacmass:0.02,endomyocardial:0.2}, age:{peds:0.15,ya:1,mid:1.4,old:0.8}, cvcell:{eosinophils:3,neutrophils:0.8,giantcells:0.8,histiocytes:1}, cvarch:{vesselwallinf:2.4,interstitialinf:0.8,coagulativenecrosis:0.8}, cvclue:{fibrinoid:1.4,granulomasvessel:1.4,nonecv:0.5}, necrosis:{present:1.4,absent:0.5}, mitoses:{low:1.3,brisk:0.1}, cvhist:{asthmaeos:3,anca:1,nonecv:0.2}}},
 
 /* ---- histiocytic neoplasms ---- */
-{id:"alkhistio", name:"ALK-positive histiocytosis", grp:"Histiocytic", prior:0.12, mods:["skin","st","cns"],
+{id:"alkhistio", name:"ALK-positive histiocytosis", grp:"Histiocytic", prior:0.12, mods:["skin","st","cns","lung"],
  morph:"Sheets of large ovoid histiocytes with abundant eosinophilic or foamy cytoplasm and irregular grooved or folded nuclei, admixed with lymphocytes, plasma cells and occasional Touton-like giant cells, sometimes with emperipolesis.",
  mol:"KIF5B::ALK most often, with other ALK fusion partners described. The diagnosis matters because ALK inhibitors produce dramatic responses. This entity postdates the references used to build this library and was added from current practice.",
  f:{skloc:{dermis:2,deep:1.2,epidermis:0.2,junction:0.1,adnexal:0.1}, skcell:{histiocytic:3,spindle:0.5}, skarch:{nodule:2.2,perivascular:0.6,fascicular:0.4}, sksymmetry:{na:2,asymmetrical:0.8,symmetrical:0.4}, skstroma:{none:1.4,granulomatous:0.8,collagentrapping:0.4}, skclue:{none:1.8}, skhist:{none:1.8}, site:{cns:0.6,sup:1.4,deep:1.2,retro:0.4,gi:0.2,visc:0.6,bone:0.3,gyn:0.1,breast:0.1,gitract:0.2,hn:0.3,skin:1.4,lung:0.3,gu:0.2,hpb:0.6,endo:0.1,cardio:0.05}, shape:{epithelioid:2.4,spindle:0.8}, arch:{sheets:2.2,fascicular:0.5,storiform:0.5}, stroma:{minimal:1.2,collagen:0.5}, vessels:{unremarkable:1}, nuclei:{vesicular:1.6,bland:1}, necrosis:{absent:0.9,present:0.2}, mitoses:{low:1.2,brisk:0.3}, inflam:{lymphoplasmacytic:1.6,none:0.7}, clue:{none:1.4}, hist:{none:1.6}, cnsloc:{cerebralhemi:1,duralbased:1.2,midline:0.4,cortical:0.4,posteriorfossa:0.4,intraventricular:0.2,sellar:0.3,pineal:0.1,nerveroot:0.2,orbit:0.4}, cnsclue:{nonecns:1.8}, age:{peds:1.4,ya:1.2,mid:0.9,old:0.4}}},
@@ -3842,11 +3839,32 @@ const ENTITIES = [
  morph:"Large pale histiocytes with vesicular nuclei and abundant cytoplasm containing intact lymphocytes and plasma cells, which is emperipolesis, set against a plasma cell rich background with fibrosis.",
  mol:"A minority carry MAP2K1 or KRAS alterations. The histiocytes are S100 positive and CD1a negative, which is the combination that identifies them.",
  f:{skloc:{dermis:2.4,deep:1,epidermis:0.2,junction:0.1,adnexal:0.1}, skcell:{histiocytic:3,lymphoid:1}, skarch:{nodule:2.2,perivascular:0.6}, sksymmetry:{na:2.2,asymmetrical:0.6,symmetrical:0.4}, skstroma:{none:1.2,granulomatous:0.6,collagentrapping:0.6}, skclue:{none:1.8}, skhist:{none:1.8}, site:{cns:0.6,sup:1.2,deep:0.9,retro:0.4,gi:0.2,visc:0.4,bone:0.6,gyn:0.1,breast:0.2,gitract:0.2,hn:1.4,skin:1.2,lung:0.3,gu:0.2,hpb:0.3,endo:0.1,cardio:0.05}, shape:{epithelioid:2.6,spindle:0.3}, arch:{sheets:2.2,nested:0.5}, stroma:{minimal:1,collagen:0.8}, vessels:{unremarkable:1}, nuclei:{vesicular:2.2,bland:0.8}, necrosis:{absent:0.95,present:0.1}, mitoses:{low:1.3,brisk:0.15}, inflam:{lymphoplasmacytic:2.6,none:0.3}, clue:{none:1.4}, hist:{none:1.6}, hnsite:{neck:2.6,sinonasal:0.8,oral:0.4,nasopharynx:0.3,larynx:0.2,majorsalivary:0.3,minorsalivary:0.2,jaw:0.2}, hncell:{oncocytic:1.6,lymphoid:1.4,basaloid:0.2}, hnarch:{solid:2.2,trabecular:0.4}, hnstroma:{lymphoid:2,fibrous:0.8,none:0.6}, hnclue:{none:1.8}, hnhist:{none:1.8}, cnsloc:{duralbased:2.4,cerebralhemi:0.4,sellar:0.4,midline:0.3,cortical:0.2,posteriorfossa:0.3,intraventricular:0.2,pineal:0.1,nerveroot:0.2,orbit:0.5}, cnsclue:{nonecns:1.8}, age:{peds:0.9,ya:1.4,mid:1.2,old:0.6}}},
-{id:"ecd", name:"Erdheim-Chester disease", grp:"Histiocytic", prior:0.15, mods:["bone","st","cns","skin"],
+{id:"ecd", name:"Erdheim-Chester disease", grp:"Histiocytic", prior:0.15, mods:["bone","st","cns","skin","lung"],
  morph:"Sheets of foamy histiocytes with small bland nuclei in a densely fibrotic background with Touton giant cells and lymphoid aggregates, characteristically involving the metadiaphyses of the long bones bilaterally and symmetrically.",
  mol:"BRAF V600E in more than half, with other MAP kinase alterations in the remainder. Sclerotic long bone lesions on imaging are the clue that ties the systemic disease together.",
  f:{bloc:{metaphysis:2,diaphysis:2,epiphysis:0.2,axial:0.6,craniofacial:0.4,surface:0.2}, bcells:{histiocytoid:2.6,spindlefib:1}, bmatrix:{fibrous:2,none:0.8,osteoid:0.4}, bpattern:{sclerotic:2.4,permeative:0.4,welldefined:0.5}, bgiant:{few:1.4,many:0.5,none:0.7}, bclue:{storiformfoam:2,none:0.8}, bhist:{multiple:2,none:0.8}, skloc:{dermis:2,deep:1,epidermis:0.3,junction:0.2,adnexal:0.1}, skcell:{histiocytic:3}, skarch:{nodule:2,perivascular:0.6}, sksymmetry:{na:2.2,symmetrical:0.6,asymmetrical:0.4}, skstroma:{granulomatous:1.2,none:1,collagentrapping:0.8}, skclue:{none:1.8}, skhist:{none:1.8}, site:{cns:0.5,sup:0.8,deep:0.8,retro:1.6,gi:0.1,visc:0.6,bone:1.8,gyn:0.1,breast:0.1,gitract:0.1,hn:0.2,skin:0.8,lung:0.4,gu:0.4,hpb:0.2,endo:0.1,cardio:0.6}, shape:{epithelioid:2.4,spindle:0.8}, arch:{sheets:2,storiform:0.8}, stroma:{collagen:1.8,minimal:0.6}, vessels:{unremarkable:1}, nuclei:{bland:2.2,vesicular:0.5}, necrosis:{absent:0.95,present:0.1}, mitoses:{low:1.4,brisk:0.08}, inflam:{lymphoplasmacytic:1.4,none:0.8}, clue:{none:1.4}, hist:{none:1.6}, cnsloc:{duralbased:1.6,sellar:1.4,cerebralhemi:0.4,posteriorfossa:0.5,midline:0.4,cortical:0.2,intraventricular:0.2,pineal:0.1,nerveroot:0.2,orbit:1.2}, cnsclue:{nonecns:1.8}, age:{peds:0.1,ya:0.5,mid:1.6,old:1.2}}}
 ];
+/* The site question once had a "skin or subcutis" option alongside a separate
+   "skin" one, which sent anyone with a skin lesion into the soft tissue module.
+   The two are now merged. Entity weights written against the old option are
+   folded into the soft tissue one here rather than edited in place. */
+for(const e of ENTITIES){
+  if(e.f && e.f.site && ("sup" in e.f.site)){
+    e.f.site.deep = Math.max(e.f.site.deep || 0, e.f.site.sup);
+    delete e.f.site.sup;
+  }
+  /* "Wall of the GI tract" and "viscus or lung" duplicated the later
+     gastrointestinal and pulmonary options and have been retired. */
+  if(e.f && e.f.site && ("gi" in e.f.site)){
+    e.f.site.gitract = Math.max(e.f.site.gitract || 0, e.f.site.gi);
+    delete e.f.site.gi;
+  }
+  if(e.f && e.f.site && ("visc" in e.f.site)){
+    e.f.site.lung = Math.max(e.f.site.lung || 0, e.f.site.visc);
+    delete e.f.site.visc;
+  }
+}
+
 const EMAP = Object.fromEntries(ENTITIES.map(e=>[e.id,e]));
 
 /* Entities that appear in more than one module need a feature map for each
@@ -4031,6 +4049,94 @@ const GI_FEATURES = {
 };
 for(const eid in GI_FEATURES) Object.assign(EMAP[eid].f, GI_FEATURES[eid]);
 
+/* Added when the duplicate "wall of the GI tract" site option was retired. */
+const GI_FEATURES_2 = {
+  sarcca:{gisite:{oesophagus:1.4,stomach:0.9,colon:0.4,anus:0.4,smallbowel:0.2,appendix:0.05},
+    gicell:{squamous:1.4,columnar:0.6,spindle:1.2}, giarch:{solid:1.8,diffuse:0.5,tubular:0.4},
+    giatypia:{invasive:2.6,highgrade:0.5}, gistroma:{desmoplastic:2,none:0.5},
+    giclue:{none:1.4}, gihist:{none:1.4,priorca:0.6}},
+  lms:{gisite:{stomach:1,colon:0.8,smallbowel:0.6,oesophagus:0.5,anus:0.3,appendix:0.05},
+    gicell:{spindle:2.6}, giarch:{fascicular:2.4,solid:0.6},
+    giatypia:{invasive:2,none:0.5}, gistroma:{none:1.4,smoothmuscle:0.6},
+    giclue:{none:1.6}, gihist:{none:1.6}},
+  imt:{gisite:{stomach:0.9,smallbowel:0.8,colon:0.7,oesophagus:0.3,anus:0.1,appendix:0.2},
+    gicell:{spindle:2.2,lymphoid:1}, giarch:{fascicular:1.6,solid:0.8,intact:0.4},
+    giatypia:{none:1.2,invasive:0.8}, gistroma:{inflamed:1.6,none:0.8},
+    giclue:{none:1.6}, gihist:{none:1.6}},
+  ebvsmt:{gisite:{stomach:0.8,colon:0.8,smallbowel:0.7,oesophagus:0.3,anus:0.2,appendix:0.1},
+    gicell:{spindle:2.6,lymphoid:0.6}, giarch:{fascicular:2.2,solid:0.6},
+    giatypia:{none:1,invasive:0.8}, gistroma:{none:1.2,inflamed:0.9},
+    giclue:{none:1.6}, gihist:{immunosupp:2.8,none:0.2}}
+};
+for(const eid in GI_FEATURES_2) Object.assign(EMAP[eid].f, GI_FEATURES_2[eid]);
+
+/* Gastric glomus tumour: a classic mural mimic of GIST, and previously only
+   reachable through the soft tissue route. */
+Object.assign(EMAP.glomus.f, {
+  gisite:{stomach:2.8,smallbowel:0.2,colon:0.15,oesophagus:0.1,anus:0.05,appendix:0.05},
+  gicell:{clear:1.8,neuroendocrine:0.7,spindle:0.5,columnar:0.05},
+  giarch:{nested:2.4,solid:1.2,fascicular:0.3,intact:0.2},
+  giatypia:{none:1.8,lowgrade:0.5,invasive:0.2,highgrade:0.1},
+  gistroma:{none:1.4,collagenous:0.6,smoothmuscle:0.5},
+  giclue:{none:1.8},
+  gihist:{none:1.8}
+});
+
+/* Added when the duplicate "viscus or lung" site option was retired. */
+const LUNG_FEATURES_2 = {
+  sarcca:{lgsite:{peripheral:1.2,central:1.4,pleura:0.3,mediastinum:0.3,diffuse:0.1},
+    lgcell:{squamous:1.2,spindle:1.4,largepolygonal:0.8},
+    lgarch:{solid:2,fascicular:1}, lgstroma:{desmoplastic:1.8,none:0.5},
+    lgclue:{keratin:1,none:1.2}, lghist:{smoking:2,none:0.7}},
+  melanoma:{lgsite:{peripheral:1.4,pleura:0.4,central:0.4,mediastinum:0.3,diffuse:0.2},
+    lgcell:{largepolygonal:1.4,spindle:1},
+    lgarch:{solid:2,organoid:0.4}, lgstroma:{none:1.2,desmoplastic:0.8},
+    lgclue:{none:1.6}, lghist:{priorca:2.4,none:0.5}},
+  lms:{lgsite:{peripheral:1,central:0.6,pleura:0.4,mediastinum:0.3,diffuse:0.1},
+    lgcell:{spindle:2.6}, lgarch:{fascicular:2.4,solid:0.6},
+    lgstroma:{none:1.2,desmoplastic:0.6}, lgclue:{none:1.6},
+    lghist:{priorca:1.2,none:1}},
+  arms:{lgsite:{mediastinum:0.8,peripheral:0.7,central:0.3,pleura:0.3,diffuse:0.1},
+    lgcell:{neuroendocrine:0.6,largepolygonal:0.6,spindle:0.5},
+    lgarch:{organoid:1.4,solid:1.4}, lgstroma:{none:1.2,desmoplastic:0.6},
+    lgclue:{none:1.6}, lghist:{none:1.8}},
+  erms:{lgsite:{central:0.9,peripheral:0.7,mediastinum:0.5,pleura:0.2,diffuse:0.1},
+    lgcell:{spindle:1.2,neuroendocrine:0.5,largepolygonal:0.4},
+    lgarch:{solid:1.6,fascicular:0.8}, lgstroma:{myxoid:1.2,none:0.8},
+    lgclue:{none:1.6}, lghist:{none:1.8}},
+  lbl:{lgsite:{mediastinum:2.4,peripheral:0.4,pleura:0.4,diffuse:0.2,central:0.1},
+    lgcell:{lymphoid:3}, lgarch:{solid:2.4}, lgstroma:{none:1.4},
+    lgclue:{none:1.6}, lghist:{none:1.8}},
+  granular:{lgsite:{central:2,peripheral:0.4,mediastinum:0.2,pleura:0.1,diffuse:0.05},
+    lgcell:{largepolygonal:2,histiocytic:0.8},
+    lgarch:{solid:2,organoid:0.5}, lgstroma:{none:1.2,desmoplastic:0.6},
+    lgclue:{none:1.6}, lghist:{none:1.8}},
+  rcc:{lgsite:{peripheral:1.6,pleura:0.3,central:0.3,mediastinum:0.2,diffuse:0.1},
+    lgcell:{clear:2.4,largepolygonal:0.8},
+    lgarch:{solid:1.6,acinar:0.6,organoid:0.6}, lgstroma:{none:1.4},
+    lgclue:{none:1.6}, lghist:{priorca:2.6,none:0.4}},
+  leiomyoma:{lgsite:{peripheral:1.2,central:0.6,pleura:0.2,mediastinum:0.2,diffuse:0.1},
+    lgcell:{spindle:2.6}, lgarch:{fascicular:2.4,solid:0.4},
+    lgstroma:{none:1.4}, lgclue:{none:1.6}, lghist:{none:1.8}},
+  ehe:{lgsite:{peripheral:1.6,pleura:0.9,diffuse:0.5,central:0.2,mediastinum:0.2},
+    lgcell:{largepolygonal:1.6,mesothelial:0.3,spindle:0.6},
+    lgarch:{solid:1.4,organoid:0.8,interstitial:0.4},
+    lgstroma:{hyaline:1.4,myxoid:0.9,none:0.6}, lgclue:{none:1.6},
+    lghist:{screening:1.2,none:1.2}},
+  ebvsmt:{lgsite:{peripheral:1.2,central:0.6,mediastinum:0.3,pleura:0.2,diffuse:0.2},
+    lgcell:{spindle:2.6,lymphoid:0.6}, lgarch:{fascicular:2.2,solid:0.6},
+    lgstroma:{none:1.2}, lgclue:{none:1.6}, lghist:{transplant:2.6,none:0.3}},
+  alkhistio:{lgsite:{peripheral:0.9,diffuse:0.5,mediastinum:0.4,central:0.3,pleura:0.2},
+    lgcell:{histiocytic:2.4,largepolygonal:0.8},
+    lgarch:{solid:1.8,interstitial:0.6}, lgstroma:{none:1.2},
+    lgclue:{none:1.6}, lghist:{none:1.8}},
+  ecd:{lgsite:{diffuse:1.2,pleura:0.8,peripheral:0.8,mediastinum:0.6,central:0.2},
+    lgcell:{histiocytic:2.4,spindle:0.8},
+    lgarch:{interstitial:1.6,solid:1}, lgstroma:{uniformfibrosis:1.4,none:0.8},
+    lgclue:{none:1.6}, lghist:{dyspnoea:1.2,none:1.2}}
+};
+for(const eid in LUNG_FEATURES_2) Object.assign(EMAP[eid].f, LUNG_FEATURES_2[eid]);
+
 /* Head and neck answers for entities shared with other modules. */
 const HN_FEATURES = {
   secretoryca:{hnsite:{majorsalivary:2.2,minorsalivary:1.2,oral:0.4,larynx:0.05,sinonasal:0.1,nasopharynx:0.05,jaw:0.05,neck:0.1},
@@ -4185,6 +4291,56 @@ const SKIN_FEATURES = {
     skclue:{none:1.8}, skhist:{none:1.8}}
 };
 for(const eid in SKIN_FEATURES) Object.assign(EMAP[eid].f, SKIN_FEATURES[eid]);
+
+/* Skin answers for the superficial soft tissue entities, added when the two
+   overlapping site options were merged into one. */
+const SKIN_FEATURES_2 = {
+  lipoma:{skloc:{deep:2,dermis:1.2,adnexal:0.1,epidermis:0.05,junction:0.05},
+    skcell:{histiocytic:0.5,spindle:0.6}, skarch:{nodule:2.4,fascicular:0.3},
+    sksymmetry:{symmetrical:2,na:1.2,asymmetrical:0.15},
+    skstroma:{none:2,myxoid:0.4}, skclue:{none:1.8}, skhist:{none:1.8}},
+  scpl:{skloc:{deep:1.8,dermis:1.4,adnexal:0.1,epidermis:0.05,junction:0.05},
+    skcell:{spindle:2,histiocytic:0.4}, skarch:{nodule:2,fascicular:0.8},
+    sksymmetry:{symmetrical:1.8,na:1.2,asymmetrical:0.2},
+    skstroma:{collagentrapping:1.4,myxoid:1,none:0.8}, skclue:{none:1.8},
+    skhist:{none:1.8}},
+  myxofib:{skloc:{dermis:1.6,deep:1.8,adnexal:0.05,epidermis:0.1,junction:0.05},
+    skcell:{spindle:2.2,histiocytic:0.6}, skarch:{nodule:1.8,fascicular:1},
+    sksymmetry:{asymmetrical:2,na:1,symmetrical:0.2},
+    skstroma:{myxoid:2.6,none:0.4}, skclue:{none:1.8},
+    skhist:{sundamage:1,radiation:0.5,none:1.2}},
+  nsmyxoma:{skloc:{dermis:2.6,deep:0.4,adnexal:0.1,epidermis:0.05,junction:0.05},
+    skcell:{spindle:1.4,histiocytic:1.2}, skarch:{nodule:2,cords:0.6},
+    sksymmetry:{symmetrical:2,na:1.2,asymmetrical:0.15},
+    skstroma:{myxoid:2.8,none:0.3}, skclue:{none:1.8}, skhist:{none:1.8}},
+  myopericytoma:{skloc:{dermis:2.2,deep:0.8,adnexal:0.05,epidermis:0.05,junction:0.05},
+    skcell:{spindle:1.8,histiocytic:0.8}, skarch:{nodule:2.2,perivascular:1},
+    sksymmetry:{symmetrical:2.2,na:1,asymmetrical:0.15},
+    skstroma:{none:1.6,collagentrapping:0.4}, skclue:{none:1.8}, skhist:{none:1.8}},
+  tgct:{skloc:{deep:2.2,dermis:1,adnexal:0.05,epidermis:0.05,junction:0.05},
+    skcell:{histiocytic:2.4,spindle:0.6}, skarch:{nodule:2.4,fascicular:0.4},
+    sksymmetry:{na:1.8,symmetrical:1,asymmetrical:0.3},
+    skstroma:{collagentrapping:1,none:1.2}, skclue:{none:1.8}, skhist:{none:1.8}},
+  afh:{skloc:{deep:1.8,dermis:1.4,adnexal:0.05,epidermis:0.05,junction:0.05},
+    skcell:{histiocytic:1.6,spindle:1.4}, skarch:{nodule:2.4,fascicular:0.4},
+    sksymmetry:{symmetrical:2,na:1.2,asymmetrical:0.2},
+    skstroma:{none:1.4,collagentrapping:0.6}, skclue:{none:1.8}, skhist:{none:1.8}},
+  pmhe:{skloc:{dermis:1.6,deep:1.8,adnexal:0.05,epidermis:0.1,junction:0.05},
+    skcell:{spindle:1.6,histiocytic:1.4,endothelial:0.6},
+    skarch:{nodule:2,fascicular:0.8},
+    sksymmetry:{asymmetrical:1.8,na:1.2,symmetrical:0.3},
+    skstroma:{none:1.6}, skclue:{none:1.8}, skhist:{none:1.8}},
+  khe:{skloc:{dermis:2,deep:1.4,adnexal:0.05,epidermis:0.1,junction:0.05},
+    skcell:{endothelial:2,spindle:1.6}, skarch:{nodule:2,fascicular:0.8,perivascular:0.5},
+    sksymmetry:{asymmetrical:1.4,na:1.4,symmetrical:0.5},
+    skstroma:{none:1.6}, skclue:{none:1.8}, skhist:{none:1.8}},
+  fhi:{skloc:{deep:2,dermis:1.2,adnexal:0.05,epidermis:0.05,junction:0.05},
+    skcell:{spindle:1.8,histiocytic:0.5}, skarch:{nodule:2.2,fascicular:0.6},
+    sksymmetry:{symmetrical:1.8,na:1.2,asymmetrical:0.2},
+    skstroma:{myxoid:1.4,collagentrapping:1.2,none:0.5}, skclue:{none:1.8},
+    skhist:{none:1.8}}
+};
+for(const eid in SKIN_FEATURES_2) Object.assign(EMAP[eid].f, SKIN_FEATURES_2[eid]);
 
 /* Pulmonary answers for entities shared with other modules. */
 const LUNG_FEATURES = {
@@ -5550,6 +5706,7 @@ const PROFILES = {
    separate object matters: a duplicate key inside one object literal silently
    discards the earlier entry, which would wipe an entity's whole profile. */
 const PROFILE_PATCH = {
+  glomus:{dog1:0.03,cd117:0.03,syn:0.05,chromo:0.03,insm1:0.04,cd56:0.4,panck:0.02,s100:0.03,cdx2:0.02,ck20:0.02,gata3:0.03},
   /* histiocytic neoplasms and predictive markers */
   alkhistio:{alk:0.95,cd68:0.9,cd163:0.9,fxiiia:0.7,s100:0.5,cd1a:0.03,langerin:0.02,panck:0.03,sox10:0.03,melana:0.02,brafv600e:0.03,cathk:0.4,desmin:0.03},
   rdd:{s100:0.95,cd68:0.9,cd163:0.9,cd1a:0.03,langerin:0.03,alk:0.03,sox10:0.05,fxiiia:0.5,panck:0.03,melana:0.02,cyclind1:0.6,brafv600e:0.05},
