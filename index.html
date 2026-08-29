@@ -4,16 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PathoPanel — morphology-guided IHC selection for pathologists</title>
-<meta name="google-site-verification" content="SEUEdP7s6F06EJRwLoF8E1bZJgMWPOUwOZDOn45ae1w" />
 <meta name="description" content="A free teaching tool for pathology trainees. Describe the morphology and PathoPanel ranks a differential, then works out which immunohistochemical stain would do most to separate it. 394 entities and 150 antibodies across thirteen organ systems.">
 <meta name="author" content="Dr Nixon Dangol">
 <meta name="keywords" content="immunohistochemistry, IHC panel, surgical pathology, differential diagnosis, pathology education, histopathology, residency, FRCPath">
 
-<!-- Set these two to your live address once the site is deployed. If you host the
-     same file on more than one domain, point the canonical link at whichever one
-     you want search engines to treat as the real site. -->
-<link rel="canonical" href="https://pathnixon-dev.github.io/pathopanel/">
-<meta property="og:url" content="https://pathnixon-dev.github.io/pathopanel/">
+<!-- The site is published on both Neocities and GitHub Pages. Neocities is the
+     canonical address, so this pair must stay identical in BOTH copies of the
+     file: it is what stops the two versions competing with each other. -->
+<link rel="canonical" href="https://pathopanel.neocities.org/">
+<meta property="og:url" content="https://pathopanel.neocities.org/">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PathoPanel">
@@ -22,6 +21,13 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PathoPanel — morphology-guided IHC selection">
 <meta name="twitter:description" content="Choose the stain that separates your differential, not the stain that names your hunch. A free teaching tool for pathology trainees.">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4B3A8C">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PathoPanel">
 
 <script type="application/ld+json">
 {
@@ -311,9 +317,9 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding-top:16px;
       Head and neck asks by subsite, since a parotid differential and a sinonasal one share almost nothing. The
       gastrointestinal and skin modules cover inflammatory and infective patterns as well as tumours, because much
       of that work is non-neoplastic.</p>
-      <p>Thirteen modules, holding 394 entities and 150 antibodies: soft tissue, central nervous system, bone,
+      <p>Fourteen modules, holding 406 entities and 155 antibodies: soft tissue, central nervous system, bone,
       gynaecological, breast, gastrointestinal, head and neck, skin, pulmonary and pleural, genitourinary,
-      hepatobiliary and pancreatic, endocrine, and cardiovascular.</p>
+      hepatobiliary and pancreatic, endocrine, cardiovascular, and lymph node and haematolymphoid.</p>
       <p>The cardiovascular module behaves differently from the rest and should. Most of that work is decided on
       morphology and clinical correlation, so the tool will often reach a confident answer and then tell you that no
       remaining antibody would change it. That is the correct answer there, not a gap in the library.</p>
@@ -408,8 +414,6 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding-top:16px;
       distils the WHO Classification of Tumours series and the primary literature, and Dr Schaberg says so explicitly
       of his own notes. The WHO volumes are the authority, and this tool has not yet been checked against them.
       Treat what follows as a reasoning exercise built on teaching material, not as a reference standard.</p>
-      <p class="smallnote">Anyone building on these sources should buy them. Two are commercial books and the third is
-      given away by a working pathologist. None of them are reproduced here and none of them should be replaced by this.</p>
 
       <h2 class="secthead">Not a diagnostic device</h2>
       <p>This is a teaching tool for pathology training. It does not make diagnoses. Its recommendations must be read
@@ -429,8 +433,9 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding-top:16px;
     </div>
     <div class="card">
       <h2 class="secthead">Creator</h2>
-      <p>PathoPanel is built and maintained by <b>Dr Nixon Dangol</b>, a third year pathology resident in Kathmandu,
-      Nepal.</p>
+      <p>PathoPanel is built and maintained by <b>Dr Nixon Dangol</b>, a pathology resident at Kathmandu Model
+      Hospital, training under the National Board of Medical Specialties, Medical Education Commission, Government
+      of Nepal.</p>
       <p>It grew out of the observation that trainees learn which stains exist for a tumour long before they learn
       which stain to order next, and that the second skill is the one used every day at the microscope. The tool is
       an attempt to make that reasoning visible: to show the differential shifting as each feature is added, and to
@@ -447,17 +452,8 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding-top:16px;
       entity, the antibody and what it should be. A <b>pitfall</b> that is misleading or out of date. Please say which
       module the case was in.</p>
 
-      <h2 class="secthead">Support this project</h2>
-      <p>There is nothing to buy here and nothing to sign up for. If you want to help, these are the things that
-      actually help.</p>
-      <ul class="support">
-        <li><b>Buy the references.</b> Two of the three are commercial books and the third is given away by a working
-        pathologist. This tool is not a substitute for any of them.</li>
-        <li><b>Pass it to a resident.</b> It was written for people learning to sign out, not for people who already
-        can.</li>
-        <li><b>Check it against your own cases.</b> The most useful testing is someone running a case they already
-        know the answer to and seeing where the tool goes wrong.</li>
-      </ul>
+      <p class="smallnote">If you find it useful, it would mean a lot if you passed it on to another resident.
+      That is all the support it needs.</p>
       <div class="actions">
         <button class="primary" id="creatorBack">Back</button>
       </div>
@@ -516,7 +512,8 @@ const QUESTIONS = [
         ["gu","Kidney, bladder, prostate or testis"],
         ["hpb","Liver, pancreas, gallbladder or bile duct"],
         ["endo","Thyroid, parathyroid, adrenal or pituitary"],
-        ["cardio","Heart, valve or blood vessel"]]},
+        ["cardio","Heart, valve or blood vessel"],
+        ["ln","Lymph node, spleen or bone marrow"]]},
 
  {id:"age", mods:"*", text:"What is the patient's age group?", short:"Age",
   opts:[["peds","Under 18"],["ya","18 to 40"],["mid","40 to 60"],["old","Over 60"]]},
@@ -1351,7 +1348,63 @@ const QUESTIONS = [
         ["tuberous","Tuberous sclerosis"],
         ["carcinoidsyn","Carcinoid syndrome"],
         ["paraprotein","Plasma cell dyscrasia or a serum paraprotein"],
-        ["fever","Fever with a new murmur"]]}
+        ["fever","Fever with a new murmur"]]},
+ /* ---------- lymph node and haematolymphoid module ---------- */
+ {id:"lnsite", mods:["ln"], text:"What is the specimen?", short:"Specimen",
+  opts:[["node","Lymph node"],
+        ["spleen","Spleen"],
+        ["marrow","Bone marrow"],
+        ["extranodal","Extranodal lymphoid mass"],
+        ["tonsil","Tonsil or Waldeyer ring"]]},
+
+ {id:"lnpattern", mods:["ln"], text:"What is the architectural pattern?", short:"Pattern",
+  opts:[["preserved","Architecture preserved with reactive follicles"],
+        ["follicular","Effaced by back-to-back follicles of uniform size"],
+        ["diffuse","Diffusely effaced by a sheet of cells"],
+        ["nodularsclerosis","Nodules separated by broad collagen bands"],
+        ["interfollicular","Expansion of the interfollicular or paracortical zone"],
+        ["sinusoidal","Expansion of the sinuses"],
+        ["granulomatousln","Granulomas"],
+        ["mantlezone","Vaguely nodular or mantle zone pattern"],
+        ["starrysky","Diffuse sheets with a starry sky pattern"],
+        ["metastaticdeposit","Cohesive nests or glands within the node"]]},
+
+ {id:"lncell", mods:["ln"], text:"What is the predominant cell?", short:"Cell type",
+  opts:[["smalllymph","Small mature lymphocytes"],
+        ["centrocyte","Small cleaved cells with irregular nuclei"],
+        ["largelymph","Large cells with vesicular nuclei and nucleoli"],
+        ["hrs","Large cells with huge inclusion-like nucleoli in a mixed background"],
+        ["blast","Blasts with fine chromatin"],
+        ["plasmacell","Plasma cells"],
+        ["histiocytesln","Histiocytes"],
+        ["monocytoid","Monocytoid cells with abundant pale cytoplasm"],
+        ["epithelial","Cohesive epithelial or melanocytic cells"],
+        ["spindleln","Spindle cells"]]},
+
+ {id:"lnclue", mods:["ln"], text:"Any of these specific features?", short:"Special feature",
+  opts:[["noneln","None of the below"],
+        ["rsclassic","Diagnostic Reed-Sternberg cells with an eosinophil-rich background"],
+        ["lacunar","Lacunar cells in a retraction space"],
+        ["popcorn","Popcorn cells in a nodular meshwork of small B cells"],
+        ["tingible","Tingible body macrophages within follicles"],
+        ["nogermcentres","Follicles without germinal centres or tingible body macrophages"],
+        ["caseation","Caseating necrosis"],
+        ["emperipolesisln","Emperipolesis"],
+        ["lymphoepithelialln","Lymphoepithelial lesions"],
+        ["hyalinevessel","Regressed follicles with penetrating hyalinised vessels"],
+        ["anthracotic","Anthracotic pigment or foreign material in sinuses"]]},
+
+ {id:"lnhist", mods:["ln"], text:"What does the clinical setting add?", short:"Setting",
+  opts:[["noneln","Nothing relevant"],
+        ["youngcervical","Young adult with cervical or mediastinal nodes"],
+        ["generalised","Generalised lymphadenopathy"],
+        ["bsymptoms","Fever, night sweats and weight loss"],
+        ["hiv","HIV infection or immunosuppression"],
+        ["knownca","Known carcinoma or melanoma"],
+        ["autoimmune","Autoimmune disease"],
+        ["cytopenias","Cytopenias or an abnormal blood count"],
+        ["endemic","Endemic region or a jaw mass in a child"],
+        ["catscratch","Cat scratch or recent infection"]]}
 ];
 
 /* ---------- organ modules ---------- */
@@ -1368,9 +1421,10 @@ const MODULES = {
   gu:   {name:"Genitourinary", qs:["site","gusite","age","gucell","guarch","gustroma","guclue","necrosis","mitoses","guhist"]},
   hpb:  {name:"Hepatobiliary and pancreatic", qs:["site","hpbsite","age","hpbcell","hpbarch","hpbstroma","hpbclue","necrosis","mitoses","hpbhist"]},
   endo: {name:"Endocrine", qs:["site","endosite","age","endocell","endoarch","endonuclei","endostroma","endoclue","necrosis","mitoses","endohist"]},
-  cardio:{name:"Cardiovascular", qs:["site","cvsite","age","cvcell","cvarch","cvclue","necrosis","mitoses","cvhist"]}
+  cardio:{name:"Cardiovascular", qs:["site","cvsite","age","cvcell","cvarch","cvclue","necrosis","mitoses","cvhist"]},
+  ln:   {name:"Lymph node and haematolymphoid", qs:["site","lnsite","age","lnpattern","lncell","lnclue","necrosis","mitoses","lnhist"]}
 };
-const SITE_MODULE = {cns:"cns", bone:"bone", gyn:"gyn", breast:"breast", gitract:"gi_", hn:"hn", skin:"skin", lung:"lung", gu:"gu", hpb:"hpb", endo:"endo", cardio:"cardio", sup:"st", deep:"st", retro:"st", gi:"st", visc:"st"};
+const SITE_MODULE = {cns:"cns", bone:"bone", gyn:"gyn", breast:"breast", gitract:"gi_", hn:"hn", skin:"skin", lung:"lung", gu:"gu", hpb:"hpb", endo:"endo", cardio:"cardio", ln:"ln", sup:"st", deep:"st", retro:"st", gi:"st", visc:"st"};
 
 const QMAP = Object.fromEntries(QUESTIONS.map(q=>[q.id,q]));
 const optLabel = (qid,oid)=>{const o=QMAP[qid].opts.find(x=>x[0]===oid);return o?o[1]:oid;};
@@ -1484,7 +1538,7 @@ const ENTITIES = [
     hist:{none:0.85,nerve_nf1:0.6}}},
 
 /* ---- carcinoma and melanoma ---- */
-{id:"metca", name:"Metastatic or infiltrating carcinoma", grp:"Epithelial", prior:1.7, mods:["st","cns","bone","breast","gi_","hn","skin","lung","gu","hpb","endo"],
+{id:"metca", name:"Metastatic or infiltrating carcinoma", grp:"Epithelial", prior:1.7, mods:["st","cns","bone","breast","gi_","hn","skin","lung","gu","hpb","endo","ln"],
  morph:"Cohesive nests or glands, desmoplastic response, sharply demarcated from surrounding tissue.",
  mol:"Site-specific; correlate with the known primary.",
  f:{site:{cns:1,sup:0.5,deep:0.5,retro:0.8,gi:0.9,visc:1,bone:0.9},
@@ -1514,7 +1568,7 @@ const ENTITIES = [
     clue:{insitu:1,none:0.6},
     hist:{priorca:0.7,none:0.7,radiation:0.2}}},
 
-{id:"melanoma", name:"Melanoma, including spindle cell and desmoplastic", grp:"Melanocytic", prior:1.0, mods:["st","cns","gi_","hn","skin","endo","lung"],
+{id:"melanoma", name:"Melanoma, including spindle cell and desmoplastic", grp:"Melanocytic", prior:1.0, mods:["st","cns","gi_","hn","skin","endo","lung","ln"],
  morph:"Sheets or fascicles of atypical cells, macronucleoli, pigment variable, junctional component in primaries.",
  mol:"BRAF, NRAS, NF1; desmoplastic melanoma carries a high mutation burden.",
  f:{site:{cns:0.7,sup:1,deep:0.4,retro:0.3,gi:0.4,visc:0.5,bone:0.3},
@@ -1811,7 +1865,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{rhabdoid:0.5,none:0.8},
     hist:{none:0.95}}},
 
-{id:"lbl", name:"Lymphoblastic lymphoma", grp:"Haematolymphoid", prior:0.4, mods:["st","bone","lung"],
+{id:"lbl", name:"Lymphoblastic lymphoma", grp:"Haematolymphoid", prior:0.4, mods:["st","bone","lung","ln"],
  morph:"Diffuse infiltrate of blasts with fine chromatin, indistinct nucleoli, brisk mitoses and apoptosis, single-file infiltration of fat.",
  mol:"Immature B or T phenotype; correlate with flow cytometry.",
  f:{site:{cns:0.3,sup:0.5,deep:0.8,retro:0.9,gi:0.4,visc:0.6,bone:0.9},
@@ -1825,7 +1879,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{none:0.95},
     hist:{none:0.95}}},
 
-{id:"dlbcl", name:"Diffuse large B-cell lymphoma", grp:"Haematolymphoid", prior:0.7, mods:["st","cns","bone","breast","gi_","hn","lung","gu","hpb","endo"],
+{id:"dlbcl", name:"Diffuse large B-cell lymphoma", grp:"Haematolymphoid", prior:0.7, mods:["st","cns","bone","breast","gi_","hn","lung","gu","hpb","endo","ln"],
  morph:"Sheets of discohesive large cells with vesicular nuclei and nucleoli, crush artefact, no cohesive nests.",
  mol:"Correlate with CD10, BCL6, MUM1, MYC and BCL2.",
  f:{site:{cns:0.7,sup:0.5,deep:0.7,retro:0.9,gi:0.9,visc:0.8,bone:0.5},
@@ -2049,7 +2103,7 @@ const ENTITIES = [
     inflam:{none:0.85}, clue:{none:0.9},
     hist:{priorca:1.4,none:0.4}}},
 
-{id:"mchs", name:"Mesenchymal chondrosarcoma", grp:"Cartilaginous", prior:0.2, mods:["st","bone","hn"],
+{id:"mchs", name:"Mesenchymal chondrosarcoma", grp:"Cartilaginous", prior:0.2, mods:["st","bone","hn","cns"],
  morph:"Sheets of primitive small round cells with staghorn vessels, punctuated by abrupt islands of well-formed hyaline cartilage.",
  mol:"HEY1::NCOA2 fusion.",
  f:{site:{cns:0.6,sup:0.1,deep:0.7,retro:0.3,gi:0.05,visc:0.2,bone:1.2},
@@ -2316,7 +2370,7 @@ const ENTITIES = [
     inflam:{none:0.9}, clue:{none:0.9},
     hist:{none:0.95}}},
 
-{id:"pmhe", name:"Pseudomyogenic haemangioendothelioma", grp:"Vascular", prior:0.15, mods:["st","skin"],
+{id:"pmhe", name:"Pseudomyogenic haemangioendothelioma", grp:"Vascular", prior:0.15, mods:["st","skin","bone"],
  morph:"Plump spindled and epithelioid cells with abundant deeply eosinophilic rhabdomyoblast-like cytoplasm, often multifocal in one limb of a young man.",
  mol:"SERPINE1::FOSB fusion.",
  f:{site:{cns:0.02,sup:1.2,deep:1,retro:0.05,gi:0.02,visc:0.05,bone:0.5},
@@ -2555,7 +2609,7 @@ const ENTITIES = [
     necrosis:{absent:0.99,present:0.01}, mitoses:{low:1.4,brisk:0.02},
     bhist:{none:0.85,multiple:0.7}}},
 
-{id:"lch", name:"Langerhans cell histiocytosis", grp:"Histiocytic", prior:0.5, mods:["bone","hn","skin","lung"],
+{id:"lch", name:"Langerhans cell histiocytosis", grp:"Histiocytic", prior:0.5, mods:["bone","hn","skin","lung","ln"],
  morph:"Sheets of cells with grooved, folded, coffee-bean nuclei and pale cytoplasm mixed with numerous eosinophils, in a lytic lesion of the skull or a long bone.",
  mol:"BRAF V600E in about half; other MAP kinase pathway alterations in the rest.",
  f:{site:{bone:1},
@@ -2569,7 +2623,7 @@ const ENTITIES = [
     necrosis:{absent:0.8,present:0.4}, mitoses:{low:0.9,brisk:0.5},
     bhist:{none:0.85,multiple:0.7}}},
 
-{id:"myeloma", name:"Plasma cell myeloma", grp:"Haematolymphoid", prior:0.9, mods:["bone"],
+{id:"myeloma", name:"Plasma cell myeloma", grp:"Haematolymphoid", prior:0.9, mods:["bone","ln"],
  morph:"Sheets of plasmacytoid cells with eccentric clock-face nuclei and perinuclear hofs, replacing marrow in multiple punched-out lytic lesions.",
  mol:"Light chain restriction by immunohistochemistry or in situ hybridisation; IGH translocations and 17p deletion for risk.",
  f:{site:{bone:1},
@@ -2936,7 +2990,7 @@ const ENTITIES = [
  morph:"Uniform round cells with speckled chromatin in nests, trabeculae and ribbons, arising in the deep mucosa.",
  mol:"Type 1 arises on autoimmune atrophic gastritis, type 2 in Zollinger-Ellison syndrome, and type 3 is sporadic and behaves worst. Gastrin status separates them.",
  f:{gisite:{stomach:2,smallbowel:1.6,appendix:1.2,colon:0.8,oesophagus:0.1,anus:0.1}, age:{peds:0.1,ya:0.8,mid:1.4,old:1}, gicell:{neuroendocrine:2.8,columnar:0.15}, giarch:{nested:2.6,solid:0.6,tubular:0.3}, giatypia:{none:0.9,lowgrade:1.2,invasive:0.8,highgrade:0.4}, gistroma:{none:1.4,desmoplastic:0.8,inflamed:0.4}, giclue:{none:1.4}, necrosis:{absent:1,present:0.4}, mitoses:{low:1.4,brisk:0.3}, gihist:{none:1.2,screening:0.6}}},
-{id:"malt", name:"Extranodal marginal zone lymphoma of MALT", grp:"Haematolymphoid", prior:0.4, mods:["gi_"],
+{id:"malt", name:"Extranodal marginal zone lymphoma of MALT", grp:"Haematolymphoid", prior:0.4, mods:["gi_","ln"],
  morph:"Dense infiltrate of small monocytoid lymphocytes expanding the lamina propria with destructive lymphoepithelial lesions.",
  mol:"Driven by Helicobacter in the stomach; API2::MALT1 predicts failure of eradication therapy.",
  f:{gisite:{stomach:2.2,smallbowel:0.8,colon:0.5,oesophagus:0.1,appendix:0.2,anus:0.05}, age:{peds:0.05,ya:0.5,mid:1.4,old:1.2}, gicell:{lymphoid:2.8,columnar:0.1}, giarch:{diffuse:2,intact:0.8,solid:0.8}, giatypia:{none:1.4,lowgrade:0.8,invasive:0.4,highgrade:0.3}, gistroma:{inflamed:1.6,none:0.8}, giclue:{lymphoepithelial:2.8,none:0.3}, necrosis:{absent:0.95,present:0.1}, mitoses:{low:1.1,brisk:0.4}, gihist:{none:1.4}}},
@@ -2944,11 +2998,11 @@ const ENTITIES = [
  morph:"Increased intraepithelial lymphocytes at the villous tips, crypt hyperplasia and villous blunting, with plasma cell rich lamina propria.",
  mol:"HLA-DQ2 and DQ8 with tissue transglutaminase antibodies. The changes are not specific and need serology and a gluten history.",
  f:{gisite:{smallbowel:2.8,stomach:0.2,colon:0.15,oesophagus:0.05,appendix:0.05,anus:0.02}, age:{peds:1.2,ya:1.2,mid:1,old:0.6}, gicell:{columnar:1.6,lymphoid:1.2}, giarch:{intact:2.6,villous:0.6}, giatypia:{none:2.6,lowgrade:0.1,highgrade:0.02,invasive:0.02}, gistroma:{inflamed:2.2,none:0.4}, giclue:{intraepitheliallymph:3,none:0.2}, necrosis:{absent:0.98,present:0.03}, mitoses:{brisk:0.9,low:0.8}, gihist:{coeliac:3,none:0.2}}},
-{id:"eatl", name:"Enteropathy-associated T-cell lymphoma", grp:"Haematolymphoid", prior:0.15, mods:["gi_"],
+{id:"eatl", name:"Enteropathy-associated T-cell lymphoma", grp:"Haematolymphoid", prior:0.15, mods:["gi_","ln"],
  morph:"Sheets of medium to large atypical lymphoid cells destroying the mucosa, with ulceration and enteropathic change in the adjacent bowel.",
  mol:"Arises on refractory coeliac disease. The cells lose normal T-cell antigens and express cytotoxic markers.",
  f:{gisite:{smallbowel:2.8,colon:0.3,stomach:0.15,oesophagus:0.02,appendix:0.05,anus:0.02}, age:{peds:0.05,ya:0.4,mid:1.4,old:1.2}, gicell:{lymphoid:2.8}, giarch:{diffuse:1.8,solid:1.4}, giatypia:{invasive:1.4,none:0.6,highgrade:0.6}, gistroma:{inflamed:1.4,none:0.9}, giclue:{intraepitheliallymph:1.6,none:0.8}, necrosis:{present:1.4,absent:0.3}, mitoses:{brisk:1.6,low:0.15}, gihist:{coeliac:2.8,none:0.3}}},
-{id:"duodfl", name:"Follicular lymphoma, duodenal type", grp:"Haematolymphoid", prior:0.15, mods:["gi_"],
+{id:"duodfl", name:"Follicular lymphoma, duodenal type", grp:"Haematolymphoid", prior:0.15, mods:["gi_","ln"],
  morph:"Dense nodular follicular infiltrate confined to the mucosa of the second part of the duodenum, forming small polyps.",
  mol:"BCL2 rearrangement. Indolent, usually localised, and often managed by observation alone.",
  f:{gisite:{smallbowel:2.8,stomach:0.15,colon:0.15,oesophagus:0.02,appendix:0.05,anus:0.02}, age:{peds:0.05,ya:0.7,mid:1.4,old:0.8}, gicell:{lymphoid:2.8}, giarch:{nested:1.6,diffuse:1,intact:0.6}, giatypia:{none:1.6,lowgrade:0.7,invasive:0.2,highgrade:0.1}, gistroma:{inflamed:1.4,none:1}, giclue:{none:1.6}, necrosis:{absent:0.98,present:0.03}, mitoses:{low:1.4,brisk:0.1}, gihist:{screening:1,none:1.2}}},
@@ -3114,7 +3168,7 @@ const ENTITIES = [
  morph:"Lobules of small round cells with speckled chromatin in a fibrillary neuropil background, with Homer Wright rosettes and a peripheral sustentacular cell layer.",
  mol:"PTCH1, GLI1 and GLI2 alterations. Graded by the Hyams system.",
  f:{hnsite:{sinonasal:2.8,nasopharynx:0.4,oral:0.1,larynx:0.1,majorsalivary:0.05,minorsalivary:0.05,jaw:0.1,neck:0.1}, age:{peds:0.7,ya:1.2,mid:1.2,old:0.7}, hncell:{srbc:3}, hnarch:{trabecular:2,solid:1.4}, hnstroma:{fibrous:1,vascular:0.7,none:1}, hnclue:{rosettes:2.8,none:0.5}, necrosis:{absent:0.8,present:0.5}, mitoses:{low:0.9,brisk:0.9}, hnhist:{nasalobstruction:2.6,none:0.4}}},
-{id:"nkt", name:"Extranodal NK/T-cell lymphoma, nasal type", grp:"Haematolymphoid", prior:0.2, mods:["hn"],
+{id:"nkt", name:"Extranodal NK/T-cell lymphoma, nasal type", grp:"Haematolymphoid", prior:0.2, mods:["hn","ln"],
  morph:"Angiocentric and angiodestructive infiltrate of atypical lymphoid cells with extensive coagulative necrosis and mucosal ulceration.",
  mol:"Epstein-Barr virus driven, with EBER positive in essentially all cases.",
  f:{hnsite:{sinonasal:2.8,nasopharynx:0.4,oral:0.1,larynx:0.1,majorsalivary:0.05,minorsalivary:0.05,jaw:0.1,neck:0.1}, age:{peds:0.2,ya:1,mid:1.4,old:0.8}, hncell:{lymphoid:3,srbc:0.4}, hnarch:{solid:2.2,trabecular:0.2}, hnstroma:{none:1.4,lymphoid:0.9,vascular:0.6}, hnclue:{none:1.6}, necrosis:{present:2.4,absent:0.1}, mitoses:{brisk:1.8,low:0.15}, hnhist:{nasalobstruction:1.8,ebv:1.2,none:0.6}}},
@@ -3832,18 +3886,69 @@ const ENTITIES = [
  f:{cvsite:{smallvessel:2.4,mediumartery:0.9,largeartery:0.2,myocardium:0.4,valve:0.05,cardiacmass:0.02,endomyocardial:0.2}, age:{peds:0.15,ya:1,mid:1.4,old:0.8}, cvcell:{eosinophils:3,neutrophils:0.8,giantcells:0.8,histiocytes:1}, cvarch:{vesselwallinf:2.4,interstitialinf:0.8,coagulativenecrosis:0.8}, cvclue:{fibrinoid:1.4,granulomasvessel:1.4,nonecv:0.5}, necrosis:{present:1.4,absent:0.5}, mitoses:{low:1.3,brisk:0.1}, cvhist:{asthmaeos:3,anca:1,nonecv:0.2}}},
 
 /* ---- histiocytic neoplasms ---- */
-{id:"alkhistio", name:"ALK-positive histiocytosis", grp:"Histiocytic", prior:0.12, mods:["skin","st","cns","lung"],
+{id:"alkhistio", name:"ALK-positive histiocytosis", grp:"Histiocytic", prior:0.12, mods:["skin","st","cns","lung","hpb","ln"],
  morph:"Sheets of large ovoid histiocytes with abundant eosinophilic or foamy cytoplasm and irregular grooved or folded nuclei, admixed with lymphocytes, plasma cells and occasional Touton-like giant cells, sometimes with emperipolesis.",
  mol:"KIF5B::ALK most often, with other ALK fusion partners described. The diagnosis matters because ALK inhibitors produce dramatic responses. This entity postdates the references used to build this library and was added from current practice.",
  f:{skloc:{dermis:2,deep:1.2,epidermis:0.2,junction:0.1,adnexal:0.1}, skcell:{histiocytic:3,spindle:0.5}, skarch:{nodule:2.2,perivascular:0.6,fascicular:0.4}, sksymmetry:{na:2,asymmetrical:0.8,symmetrical:0.4}, skstroma:{none:1.4,granulomatous:0.8,collagentrapping:0.4}, skclue:{none:1.8}, skhist:{none:1.8}, site:{cns:0.6,sup:1.4,deep:1.2,retro:0.4,gi:0.2,visc:0.6,bone:0.3,gyn:0.1,breast:0.1,gitract:0.2,hn:0.3,skin:1.4,lung:0.3,gu:0.2,hpb:0.6,endo:0.1,cardio:0.05}, shape:{epithelioid:2.4,spindle:0.8}, arch:{sheets:2.2,fascicular:0.5,storiform:0.5}, stroma:{minimal:1.2,collagen:0.5}, vessels:{unremarkable:1}, nuclei:{vesicular:1.6,bland:1}, necrosis:{absent:0.9,present:0.2}, mitoses:{low:1.2,brisk:0.3}, inflam:{lymphoplasmacytic:1.6,none:0.7}, clue:{none:1.4}, hist:{none:1.6}, cnsloc:{cerebralhemi:1,duralbased:1.2,midline:0.4,cortical:0.4,posteriorfossa:0.4,intraventricular:0.2,sellar:0.3,pineal:0.1,nerveroot:0.2,orbit:0.4}, cnsclue:{nonecns:1.8}, age:{peds:1.4,ya:1.2,mid:0.9,old:0.4}}},
-{id:"rdd", name:"Rosai-Dorfman disease", grp:"Histiocytic", prior:0.2, mods:["skin","st","hn","cns"],
+{id:"rdd", name:"Rosai-Dorfman disease", grp:"Histiocytic", prior:0.2, mods:["skin","st","hn","cns","bone","ln"],
  morph:"Large pale histiocytes with vesicular nuclei and abundant cytoplasm containing intact lymphocytes and plasma cells, which is emperipolesis, set against a plasma cell rich background with fibrosis.",
  mol:"A minority carry MAP2K1 or KRAS alterations. The histiocytes are S100 positive and CD1a negative, which is the combination that identifies them.",
  f:{skloc:{dermis:2.4,deep:1,epidermis:0.2,junction:0.1,adnexal:0.1}, skcell:{histiocytic:3,lymphoid:1}, skarch:{nodule:2.2,perivascular:0.6}, sksymmetry:{na:2.2,asymmetrical:0.6,symmetrical:0.4}, skstroma:{none:1.2,granulomatous:0.6,collagentrapping:0.6}, skclue:{none:1.8}, skhist:{none:1.8}, site:{cns:0.6,sup:1.2,deep:0.9,retro:0.4,gi:0.2,visc:0.4,bone:0.6,gyn:0.1,breast:0.2,gitract:0.2,hn:1.4,skin:1.2,lung:0.3,gu:0.2,hpb:0.3,endo:0.1,cardio:0.05}, shape:{epithelioid:2.6,spindle:0.3}, arch:{sheets:2.2,nested:0.5}, stroma:{minimal:1,collagen:0.8}, vessels:{unremarkable:1}, nuclei:{vesicular:2.2,bland:0.8}, necrosis:{absent:0.95,present:0.1}, mitoses:{low:1.3,brisk:0.15}, inflam:{lymphoplasmacytic:2.6,none:0.3}, clue:{none:1.4}, hist:{none:1.6}, hnsite:{neck:2.6,sinonasal:0.8,oral:0.4,nasopharynx:0.3,larynx:0.2,majorsalivary:0.3,minorsalivary:0.2,jaw:0.2}, hncell:{oncocytic:1.6,lymphoid:1.4,basaloid:0.2}, hnarch:{solid:2.2,trabecular:0.4}, hnstroma:{lymphoid:2,fibrous:0.8,none:0.6}, hnclue:{none:1.8}, hnhist:{none:1.8}, cnsloc:{duralbased:2.4,cerebralhemi:0.4,sellar:0.4,midline:0.3,cortical:0.2,posteriorfossa:0.3,intraventricular:0.2,pineal:0.1,nerveroot:0.2,orbit:0.5}, cnsclue:{nonecns:1.8}, age:{peds:0.9,ya:1.4,mid:1.2,old:0.6}}},
-{id:"ecd", name:"Erdheim-Chester disease", grp:"Histiocytic", prior:0.15, mods:["bone","st","cns","skin","lung"],
+{id:"ecd", name:"Erdheim-Chester disease", grp:"Histiocytic", prior:0.15, mods:["bone","st","cns","skin","lung","cardio"],
  morph:"Sheets of foamy histiocytes with small bland nuclei in a densely fibrotic background with Touton giant cells and lymphoid aggregates, characteristically involving the metadiaphyses of the long bones bilaterally and symmetrically.",
  mol:"BRAF V600E in more than half, with other MAP kinase alterations in the remainder. Sclerotic long bone lesions on imaging are the clue that ties the systemic disease together.",
  f:{bloc:{metaphysis:2,diaphysis:2,epiphysis:0.2,axial:0.6,craniofacial:0.4,surface:0.2}, bcells:{histiocytoid:2.6,spindlefib:1}, bmatrix:{fibrous:2,none:0.8,osteoid:0.4}, bpattern:{sclerotic:2.4,permeative:0.4,welldefined:0.5}, bgiant:{few:1.4,many:0.5,none:0.7}, bclue:{storiformfoam:2,none:0.8}, bhist:{multiple:2,none:0.8}, skloc:{dermis:2,deep:1,epidermis:0.3,junction:0.2,adnexal:0.1}, skcell:{histiocytic:3}, skarch:{nodule:2,perivascular:0.6}, sksymmetry:{na:2.2,symmetrical:0.6,asymmetrical:0.4}, skstroma:{granulomatous:1.2,none:1,collagentrapping:0.8}, skclue:{none:1.8}, skhist:{none:1.8}, site:{cns:0.5,sup:0.8,deep:0.8,retro:1.6,gi:0.1,visc:0.6,bone:1.8,gyn:0.1,breast:0.1,gitract:0.1,hn:0.2,skin:0.8,lung:0.4,gu:0.4,hpb:0.2,endo:0.1,cardio:0.6}, shape:{epithelioid:2.4,spindle:0.8}, arch:{sheets:2,storiform:0.8}, stroma:{collagen:1.8,minimal:0.6}, vessels:{unremarkable:1}, nuclei:{bland:2.2,vesicular:0.5}, necrosis:{absent:0.95,present:0.1}, mitoses:{low:1.4,brisk:0.08}, inflam:{lymphoplasmacytic:1.4,none:0.8}, clue:{none:1.4}, hist:{none:1.6}, cnsloc:{duralbased:1.6,sellar:1.4,cerebralhemi:0.4,posteriorfossa:0.5,midline:0.4,cortical:0.2,intraventricular:0.2,pineal:0.1,nerveroot:0.2,orbit:1.2}, cnsclue:{nonecns:1.8}, age:{peds:0.1,ya:0.5,mid:1.6,old:1.2}}}
+,
+
+/* ---- lymph node and haematolymphoid module ---- */
+{id:"reactivehyperplasia", name:"Reactive follicular hyperplasia", grp:"Reactive", prior:1.4, mods:["ln"],
+ morph:"Preserved nodal architecture with enlarged germinal centres of varying size and shape, polarised, with tingible body macrophages and an intact mantle zone.",
+ mol:"Polyclonal. Preserved architecture, polarisation and tingible body macrophages are what separate it from follicular lymphoma.",
+ f:{lnsite:{node:2.8,tonsil:0.4,spleen:0.2,marrow:0.1,extranodal:0.2}, age:{peds:1.4,ya:1.2,mid:0.8,old:0.5}, lnpattern:{preserved:3,interfollicular:0.6,follicular:0.3}, lncell:{centrocyte:1,smalllymph:1.2,largelymph:0.6,histiocytesln:0.4}, lnclue:{tingible:3,noneln:0.4}, necrosis:{absent:0.95,present:0.1}, mitoses:{brisk:1.2,low:0.7}, lnhist:{noneln:1.2,autoimmune:0.9,catscratch:0.9,hiv:0.7}}},
+{id:"granulomatouslad", name:"Granulomatous lymphadenitis", grp:"Infective and reactive", prior:0.6, mods:["ln"],
+ morph:"Epithelioid granulomas with or without central caseating necrosis, effacing the nodal architecture to a variable degree.",
+ mol:"Culture and organism stains identify mycobacteria and fungi. Sarcoidosis is a diagnosis of exclusion, and cat scratch disease gives suppurative stellate granulomas.",
+ f:{lnsite:{node:2.8,tonsil:0.4,spleen:0.2,marrow:0.1,extranodal:0.2}, age:{peds:0.9,ya:1.2,mid:1.1,old:0.8}, lnpattern:{granulomatousln:3,preserved:0.5,diffuse:0.2}, lncell:{histiocytesln:2.8,smalllymph:0.8}, lnclue:{caseation:2,noneln:1}, necrosis:{present:1.2,absent:0.8}, mitoses:{low:1.2,brisk:0.3}, lnhist:{catscratch:1.6,bsymptoms:1.2,hiv:0.9,noneln:0.8}}},
+{id:"chl", name:"Classic Hodgkin lymphoma", grp:"Hodgkin", prior:0.9, mods:["ln"],
+ morph:"Scattered large Reed-Sternberg and Hodgkin cells with huge inclusion-like nucleoli, greatly outnumbered by a mixed background of lymphocytes, eosinophils, plasma cells and histiocytes. Nodular sclerosis shows broad collagen bands and lacunar cells.",
+ mol:"CD30 and CD15 positive, CD45 negative, with weak PAX5 and loss of CD20 and CD79a. EBV positive in a proportion, particularly the mixed cellularity type.",
+ f:{lnsite:{node:2.8,tonsil:0.3,spleen:0.4,marrow:0.3,extranodal:0.2}, age:{peds:0.7,ya:1.8,mid:0.9,old:0.7}, lnpattern:{nodularsclerosis:2.4,diffuse:1,interfollicular:0.8,preserved:0.2}, lncell:{hrs:3,smalllymph:0.8,largelymph:0.4}, lnclue:{rsclassic:3,lacunar:2.4,noneln:0.3}, necrosis:{absent:0.8,present:0.5}, mitoses:{low:0.9,brisk:0.8}, lnhist:{youngcervical:2.4,bsymptoms:1.6,noneln:0.5}}},
+{id:"nlphl", name:"Nodular lymphocyte predominant Hodgkin lymphoma", grp:"Hodgkin", prior:0.2, mods:["ln"],
+ morph:"Nodular meshwork of small B cells containing scattered large popcorn cells with multilobated nuclei and small nucleoli, without eosinophils or a Reed-Sternberg background.",
+ mol:"The popcorn cells retain the B-cell programme: CD20 and CD45 positive, CD30 and CD15 negative, with EMA and OCT2 positive. The reverse of classic Hodgkin lymphoma.",
+ f:{lnsite:{node:3,tonsil:0.2,spleen:0.1,marrow:0.05,extranodal:0.1}, age:{peds:0.5,ya:1.4,mid:1.2,old:0.5}, lnpattern:{mantlezone:2,nodularsclerosis:0.4,diffuse:0.6,preserved:0.3}, lncell:{hrs:1.4,smalllymph:1.6,largelymph:0.6}, lnclue:{popcorn:3,rsclassic:0.1,noneln:0.4}, necrosis:{absent:0.97,present:0.05}, mitoses:{low:1.2,brisk:0.4}, lnhist:{noneln:1.6,youngcervical:0.8}}},
+{id:"fl", name:"Follicular lymphoma", grp:"B-cell lymphoma", prior:0.8, mods:["ln"],
+ morph:"Architecture effaced by closely packed follicles of uniform size and shape that lack polarisation, tingible body macrophages and a well-formed mantle, extending beyond the node capsule.",
+ mol:"BCL2 rearrangement, t(14;18). The neoplastic follicles are BCL2 positive, which is the opposite of a reactive germinal centre.",
+ f:{lnsite:{node:2.8,marrow:0.6,spleen:0.4,extranodal:0.4,tonsil:0.2}, age:{peds:0.05,ya:0.5,mid:1.4,old:1.4}, lnpattern:{follicular:3,diffuse:0.6,mantlezone:0.3}, lncell:{centrocyte:2.8,largelymph:0.6,smalllymph:0.6}, lnclue:{nogermcentres:2.6,tingible:0.1,noneln:0.6}, necrosis:{absent:0.97,present:0.05}, mitoses:{low:1.2,brisk:0.5}, lnhist:{generalised:1.4,noneln:1.2}}},
+{id:"mcl", name:"Mantle cell lymphoma", grp:"B-cell lymphoma", prior:0.4, mods:["ln"],
+ morph:"Monotonous small to medium cells with irregular nuclei in a vaguely nodular, mantle zone or diffuse pattern, with hyalinised vessels and scattered epithelioid histiocytes.",
+ mol:"CCND1 rearrangement, t(11;14), with nuclear cyclin D1 and SOX11. Aggressive despite the bland cytology.",
+ f:{lnsite:{node:2.4,marrow:0.8,spleen:0.7,extranodal:0.8,tonsil:0.3}, age:{peds:0.02,ya:0.2,mid:1.2,old:1.8}, lnpattern:{mantlezone:2.6,diffuse:1.4,follicular:0.3}, lncell:{centrocyte:2,smalllymph:1.6}, lnclue:{noneln:1.8,nogermcentres:0.5}, necrosis:{absent:0.9,present:0.2}, mitoses:{brisk:0.9,low:0.8}, lnhist:{generalised:1.6,cytopenias:0.8,noneln:0.9}}},
+{id:"cllsll", name:"Chronic lymphocytic leukaemia and small lymphocytic lymphoma", grp:"B-cell lymphoma", prior:0.5, mods:["ln"],
+ morph:"Diffuse effacement by small round mature lymphocytes with clumped chromatin, interrupted by pale proliferation centres containing prolymphocytes and paraimmunoblasts.",
+ mol:"Del13q, trisomy 12, del11q and del17p determine prognosis. The proliferation centres are the diagnostic feature.",
+ f:{lnsite:{node:2.4,marrow:1.4,spleen:1,extranodal:0.2,tonsil:0.2}, age:{peds:0.02,ya:0.15,mid:1,old:2}, lnpattern:{diffuse:2.8,mantlezone:0.4}, lncell:{smalllymph:3,largelymph:0.4}, lnclue:{noneln:1.8}, necrosis:{absent:0.97,present:0.05}, mitoses:{low:1.4,brisk:0.2}, lnhist:{cytopenias:2,generalised:1.4,noneln:0.6}}},
+{id:"burkitt", name:"Burkitt lymphoma", grp:"B-cell lymphoma", prior:0.3, mods:["ln"],
+ morph:"Diffuse sheets of medium-sized cells with squared-off borders, several small nucleoli and deeply basophilic vacuolated cytoplasm, with a starry sky pattern from tingible body macrophages and a near-total proliferation fraction.",
+ mol:"MYC rearrangement with an immunoglobulin partner. Ki67 approaches one hundred per cent, which is part of the definition.",
+ f:{lnsite:{node:1.8,extranodal:1.6,marrow:0.8,tonsil:0.5,spleen:0.3}, age:{peds:1.8,ya:1,mid:0.5,old:0.3}, lnpattern:{starrysky:3,diffuse:1.4}, lncell:{largelymph:1.4,blast:1.2,centrocyte:0.3}, lnclue:{tingible:1.6,noneln:0.9}, necrosis:{present:1,absent:0.7}, mitoses:{brisk:2.4,low:0.03}, lnhist:{endemic:2.6,hiv:1.2,bsymptoms:0.9,noneln:0.4}}},
+{id:"alcl", name:"Anaplastic large cell lymphoma", grp:"T-cell lymphoma", prior:0.3, mods:["ln"],
+ morph:"Cohesive sheets and sinusoidal infiltration by large pleomorphic cells with eccentric horseshoe or kidney-shaped nuclei and a paranuclear eosinophilic region, the hallmark cells.",
+ mol:"ALK rearrangement in the ALK-positive type, which occurs in younger patients and behaves better. Uniformly strong CD30 with frequent loss of other T-cell antigens.",
+ f:{lnsite:{node:2.6,extranodal:0.8,spleen:0.3,marrow:0.3,tonsil:0.2}, age:{peds:1.2,ya:1.4,mid:0.8,old:0.6}, lnpattern:{sinusoidal:2.4,diffuse:1.6,interfollicular:0.5}, lncell:{largelymph:2.4,hrs:0.8}, lnclue:{noneln:1.6,rsclassic:0.2}, necrosis:{present:0.9,absent:0.7}, mitoses:{brisk:1.8,low:0.2}, lnhist:{bsymptoms:1.4,noneln:1.2}}},
+{id:"castleman", name:"Castleman disease", grp:"Lymphoproliferative", prior:0.2, mods:["ln"],
+ morph:"Regressed atrophic germinal centres with expanded onion-skin mantle zones penetrated by hyalinised radial vessels, in the hyaline vascular type, with marked interfollicular vascularity.",
+ mol:"The plasma cell variant is driven by interleukin 6, and the multicentric form is often HHV8-associated in HIV.",
+ f:{lnsite:{node:2.8,spleen:0.2,marrow:0.1,extranodal:0.2,tonsil:0.1}, age:{peds:0.4,ya:1.4,mid:1.2,old:0.6}, lnpattern:{preserved:1.4,mantlezone:1.6,interfollicular:1.2}, lncell:{smalllymph:1.6,plasmacell:1.2,centrocyte:0.6}, lnclue:{hyalinevessel:3,noneln:0.4}, necrosis:{absent:0.97,present:0.05}, mitoses:{low:1.3,brisk:0.2}, lnhist:{hiv:1.2,noneln:1.2}}},
+{id:"nodalmet", name:"Metastatic carcinoma or melanoma in a lymph node", grp:"Metastatic", prior:1.2, mods:["ln"],
+ morph:"Cohesive nests, glands or sheets of non-lymphoid cells occupying the subcapsular sinus first and then replacing the node, sharply demarcated from the surrounding lymphoid tissue.",
+ mol:"The panel is directed by the morphology and the known or suspected primary. Keratin, S100 and SOX10 with CD45 answer the first question.",
+ f:{lnsite:{node:3,extranodal:0.3,spleen:0.1,marrow:0.3,tonsil:0.1}, age:{peds:0.1,ya:0.4,mid:1.4,old:1.6}, lnpattern:{metastaticdeposit:3,sinusoidal:0.8,diffuse:0.4}, lncell:{epithelial:3,largelymph:0.2,spindleln:0.5}, lnclue:{noneln:1.8}, necrosis:{present:1.2,absent:0.6}, mitoses:{brisk:1.4,low:0.4}, lnhist:{knownca:3,noneln:0.3}}},
+{id:"sinushistiocytosis", name:"Sinus histiocytosis", grp:"Reactive", prior:0.5, mods:["ln"],
+ morph:"Distension of the subcapsular and medullary sinuses by benign histiocytes with abundant pale cytoplasm, sometimes containing anthracotic pigment or foreign material.",
+ mol:"Non-specific and usually a drainage response. Its importance is being mistaken for metastatic carcinoma or Rosai-Dorfman disease.",
+ f:{lnsite:{node:3,spleen:0.2,marrow:0.1,extranodal:0.1,tonsil:0.1}, age:{peds:0.6,ya:1,mid:1.2,old:1}, lnpattern:{sinusoidal:3,preserved:1}, lncell:{histiocytesln:3,smalllymph:0.5,monocytoid:0.6}, lnclue:{anthracotic:2.4,noneln:0.9}, necrosis:{absent:0.97,present:0.05}, mitoses:{low:1.4,brisk:0.1}, lnhist:{knownca:1,noneln:1.4}}}
 ];
 /* The site question once had a "skin or subcutis" option alongside a separate
    "skin" one, which sent anyone with a skin lesion into the soft tissue module.
@@ -4137,6 +4242,35 @@ const LUNG_FEATURES_2 = {
     lgclue:{none:1.6}, lghist:{dyspnoea:1.2,none:1.2}}
 };
 for(const eid in LUNG_FEATURES_2) Object.assign(EMAP[eid].f, LUNG_FEATURES_2[eid]);
+
+/* Reachability fixes: these five had site weights pointing at a module they had
+   never been tagged into, so they could not appear on the route a user would take. */
+Object.assign(EMAP.mchs.f, {
+  cnsloc:{duralbased:1.6,cerebralhemi:0.6,posteriorfossa:0.4,midline:0.3,intraventricular:0.2,cortical:0.2,sellar:0.2,pineal:0.1,nerveroot:0.2,orbit:0.2},
+  cnsclue:{nonecns:1.8}});
+Object.assign(EMAP.pmhe.f, {
+  bloc:{diaphysis:1,metaphysis:0.9,epiphysis:0.5,axial:0.6,craniofacial:0.2,surface:0.3},
+  bcells:{histiocytoid:1,spindlefib:1.2,pleo:0.4},
+  bmatrix:{none:1.6,fibrous:0.4},
+  bpattern:{permeative:1,welldefined:0.9,expansile:0.4},
+  bgiant:{none:1.2,few:0.3}, bclue:{none:1.6}, bhist:{multiple:1.2,none:0.9}});
+Object.assign(EMAP.rdd.f, {
+  bloc:{craniofacial:1.4,axial:1,diaphysis:0.7,metaphysis:0.5,epiphysis:0.2,surface:0.1},
+  bcells:{histiocytoid:2.4,mononuclear:0.6},
+  bmatrix:{none:1.6,fibrous:0.5},
+  bpattern:{permeative:0.8,welldefined:1.2,expansile:0.4},
+  bgiant:{few:0.8,none:0.9}, bclue:{none:1.6}, bhist:{multiple:1.2,none:0.9}});
+Object.assign(EMAP.alkhistio.f, {
+  hpbsite:{liver:2.4,pancreas:0.3,gallbladder:0.1,bileduct:0.1},
+  hpbcell:{discohesive:0.8,hepatocytic:0.2,lymphoid:0.9,spindle:0.8},
+  hpbarch:{solid:1.8,nodular:0.9,portal:0.6,lobular:0.5},
+  hpbstroma:{inflamed:1.4,sinusoidal:0.8,none:0.8},
+  hpbclue:{none:1.6}, hpbhist:{none:1.6}});
+Object.assign(EMAP.ecd.f, {
+  cvsite:{myocardium:1.2,largeartery:1.2,smallvessel:0.6,endomyocardial:0.6,mediumartery:0.5,valve:0.2,cardiacmass:0.4},
+  cvcell:{histiocytes:2.8,fibrous:1.4,giantcells:0.8,lymphocytes:0.8},
+  cvarch:{interstitialinf:1.2,replacementfibrosis:1.4,vesselwallinf:1,intimalthickening:0.8},
+  cvclue:{nonecv:1.8}, cvhist:{heartfailure:1,nonecv:1.2}});
 
 /* Head and neck answers for entities shared with other modules. */
 const HN_FEATURES = {
@@ -4565,6 +4699,50 @@ const ENDO_FEATURES = {
     endoclue:{noneendo:1.6}, endohist:{incidentalendo:1.4,noneendo:1.2}}
 };
 for(const eid in ENDO_FEATURES) Object.assign(EMAP[eid].f, ENDO_FEATURES[eid]);
+
+/* Lymph node answers for entities shared with other modules. */
+const LN_FEATURES = {
+  dlbcl:{lnsite:{node:2.6,extranodal:1.2,tonsil:0.6,spleen:0.5,marrow:0.4},
+    lnpattern:{diffuse:3,starrysky:0.4,metastaticdeposit:0.1},
+    lncell:{largelymph:3,centrocyte:0.2}, lnclue:{noneln:1.6},
+    lnhist:{bsymptoms:1.4,generalised:1,noneln:0.9}},
+  lbl:{lnsite:{node:2,marrow:1.6,extranodal:0.8,tonsil:0.3,spleen:0.4},
+    lnpattern:{diffuse:3,starrysky:0.5}, lncell:{blast:3,largelymph:0.4},
+    lnclue:{noneln:1.6}, lnhist:{cytopenias:1.8,youngcervical:0.9,noneln:0.7}},
+  malt:{lnsite:{extranodal:2.6,node:0.8,spleen:0.4,tonsil:0.4,marrow:0.2},
+    lnpattern:{diffuse:1.6,preserved:0.8,mantlezone:0.6},
+    lncell:{monocytoid:2.4,smalllymph:1.2,plasmacell:0.8},
+    lnclue:{lymphoepithelialln:2.8,noneln:0.4}, lnhist:{autoimmune:1.6,noneln:1}},
+  duodfl:{lnsite:{extranodal:2.6,node:0.6,marrow:0.2,spleen:0.2,tonsil:0.2},
+    lnpattern:{follicular:2.6,preserved:0.5}, lncell:{centrocyte:2.4,smalllymph:0.6},
+    lnclue:{nogermcentres:1.6,noneln:0.8}, lnhist:{noneln:1.8}},
+  myeloma:{lnsite:{marrow:3,node:0.3,extranodal:0.4,spleen:0.2,tonsil:0.05},
+    lnpattern:{diffuse:2.6,interfollicular:0.3}, lncell:{plasmacell:3,smalllymph:0.2},
+    lnclue:{noneln:1.6}, lnhist:{cytopenias:2,noneln:0.8}},
+  rdd:{lnsite:{node:3,extranodal:0.8,spleen:0.1,marrow:0.1,tonsil:0.1},
+    lnpattern:{sinusoidal:3,preserved:0.6}, lncell:{histiocytesln:3,plasmacell:1},
+    lnclue:{emperipolesisln:3,noneln:0.2}, lnhist:{generalised:1.6,noneln:1}},
+  lch:{lnsite:{node:2,marrow:0.6,extranodal:0.8,spleen:0.3,tonsil:0.2},
+    lnpattern:{sinusoidal:2.2,diffuse:0.8,preserved:0.4},
+    lncell:{histiocytesln:2.6,largelymph:0.4}, lnclue:{noneln:1.6}, lnhist:{noneln:1.6}},
+  alkhistio:{lnsite:{node:2,extranodal:1.2,spleen:0.6,marrow:0.4,tonsil:0.2},
+    lnpattern:{sinusoidal:1.8,diffuse:1.2}, lncell:{histiocytesln:2.8},
+    lnclue:{emperipolesisln:0.8,noneln:1.2}, lnhist:{noneln:1.6}},
+  nkt:{lnsite:{extranodal:2.6,node:0.6,spleen:0.3,marrow:0.2,tonsil:0.4},
+    lnpattern:{diffuse:2.6}, lncell:{largelymph:1.6,smalllymph:0.8},
+    lnclue:{noneln:1.4}, lnhist:{bsymptoms:1.4,noneln:1}},
+  eatl:{lnsite:{extranodal:2.8,node:0.5,spleen:0.2,marrow:0.2,tonsil:0.1},
+    lnpattern:{diffuse:2.6}, lncell:{largelymph:2,smalllymph:0.5},
+    lnclue:{noneln:1.6}, lnhist:{noneln:1.6}},
+  melanoma:{lnsite:{node:2.8,extranodal:0.4,spleen:0.1,marrow:0.1,tonsil:0.1},
+    lnpattern:{metastaticdeposit:2.6,sinusoidal:1,diffuse:0.4},
+    lncell:{epithelial:2,spindleln:1,largelymph:0.3},
+    lnclue:{noneln:1.6}, lnhist:{knownca:2.6,noneln:0.5}},
+  metca:{lnsite:{node:3,extranodal:0.3,marrow:0.4,spleen:0.1,tonsil:0.1},
+    lnpattern:{metastaticdeposit:3,sinusoidal:0.8}, lncell:{epithelial:3},
+    lnclue:{noneln:1.6}, lnhist:{knownca:3,noneln:0.3}}
+};
+for(const eid in LN_FEATURES) Object.assign(EMAP[eid].f, LN_FEATURES[eid]);
 
 /* The CNS module gained a location question and a CNS-specific feature question,
    so every entity already in that module needs answers for both. */
@@ -5329,6 +5507,31 @@ const MARKERS = [
  expect:{choroidplexus:0.8,ependymoma:0.05,metca:0.05},
  pitfall:"Helps separate choroid plexus papilloma from metastatic papillary carcinoma and from papillary tumour of the pineal region, which is Kir7.1 negative."},
 
+{id:"cd15", name:"CD15", loc:"membranous and dot-like", def:0.03,
+ role:"Reed-Sternberg cells, with granulocytes as the internal control.",
+ expect:{chl:0.8,nlphl:0.03,alcl:0.1},
+ pitfall:"Positive in about three quarters of classic Hodgkin lymphomas, so a negative result does not exclude it when CD30 is positive and the background is right."},
+
+{id:"pax5", name:"PAX5", loc:"nuclear", def:0.03,
+ role:"B-cell lineage, retained when other B-cell markers are lost.",
+ expect:{chl:0.9,nlphl:0.95,fl:0.95,mcl:0.95,cllsll:0.95,burkitt:0.95,dlbcl:0.95,malt:0.95,duodfl:0.95,lbl:0.5,alcl:0.03,myeloma:0.1,merkel:0.6,smallcellca:0.3},
+ pitfall:"In classic Hodgkin lymphoma it is characteristically weak, dimmer than the surrounding reactive B cells, and that dimness is itself the finding. Also expressed by Merkel cell carcinoma and small cell carcinoma."},
+
+{id:"bcl2", name:"BCL2", loc:"cytoplasmic", def:0.15,
+ role:"Positive in neoplastic follicles and negative in reactive germinal centres.",
+ expect:{fl:0.85,reactivehyperplasia:0.05,mcl:0.9,cllsll:0.9,burkitt:0.1,dlbcl:0.6,nlphl:0.05},
+ pitfall:"Read it inside the follicle centre. Mantle and T cells are positive and serve as the internal control, and mistaking them for follicle centre staining is the usual error."},
+
+{id:"bcl6", name:"BCL6", loc:"nuclear", def:0.05,
+ role:"Germinal centre derivation.",
+ expect:{fl:0.9,burkitt:0.9,nlphl:0.9,dlbcl:0.6,reactivehyperplasia:0.9,chl:0.15,mcl:0.05,cllsll:0.05},
+ pitfall:"Positive in reactive germinal centres too, so it establishes germinal centre origin rather than malignancy. BCL2 is what separates neoplastic follicles from reactive ones."},
+
+{id:"ki67", name:"Ki67 (MIB1)", loc:"nuclear", def:0.3,
+ role:"Proliferation fraction, reported as a percentage rather than as positive or negative.",
+ expect:{burkitt:0.98,cllsll:0.1,fl:0.2,mcl:0.4,dlbcl:0.8,reactivehyperplasia:0.6,htt:0.5},
+ pitfall:"In Burkitt lymphoma a fraction approaching one hundred per cent is part of the definition. Elsewhere it grades rather than diagnoses, and reactive germinal centres are also highly proliferative."},
+
 {id:"cd163", name:"CD163", loc:"membranous and cytoplasmic", def:0.04,
  role:"Macrophage and histiocytic lineage, more specific than CD68.",
  expect:{jxg:0.9,rdd:0.9,ecd:0.9,alkhistio:0.9,lch:0.4,granmastitis:0.8,malakoplakia:0.9,afx:0.5,neurothekeoma:0.4},
@@ -5707,6 +5910,19 @@ const PROFILES = {
    separate object matters: a duplicate key inside one object literal silently
    discards the earlier entry, which would wipe an entity's whole profile. */
 const PROFILE_PATCH = {
+  /* lymph node and haematolymphoid module */
+  reactivehyperplasia:{cd20:0.95,cd45:0.95,cd3:0.9,bcl2:0.05,bcl6:0.9,cd10:0.7,ki67:0.6,cd30:0.15,cd15:0.05,pax5:0.95,cyclind1:0.05,panck:0.02},
+  granulomatouslad:{cd68:0.95,cd163:0.9,cd45:0.9,cd3:0.8,cd20:0.5,panck:0.02,cd30:0.05},
+  chl:{cd30:0.98,cd15:0.8,pax5:0.9,cd45:0.05,cd20:0.15,cd3:0.05,ema:0.05,alk:0.02,eber:0.4,bcl6:0.15,ki67:0.7,panck:0.02,bcl2:0.5},
+  nlphl:{cd20:0.95,cd45:0.95,pax5:0.95,ema:0.6,cd30:0.05,cd15:0.03,bcl6:0.9,cd10:0.15,bcl2:0.05,eber:0.03,panck:0.02},
+  fl:{cd20:0.95,pax5:0.95,bcl2:0.85,bcl6:0.9,cd10:0.8,cd45:0.95,cd5:0.03,cyclind1:0.03,ki67:0.2,cd30:0.03,panck:0.02},
+  mcl:{cyclind1:0.95,cd20:0.95,pax5:0.95,cd5:0.85,bcl2:0.9,cd10:0.08,bcl6:0.05,cd45:0.95,ki67:0.4,panck:0.02},
+  cllsll:{cd20:0.7,pax5:0.95,cd5:0.9,cd45:0.95,bcl2:0.9,cyclind1:0.05,cd10:0.04,bcl6:0.05,ki67:0.1,panck:0.02},
+  burkitt:{cd20:0.95,pax5:0.95,cd10:0.9,bcl6:0.9,bcl2:0.1,ki67:0.98,cd45:0.9,tdt:0.03,cd30:0.03,eber:0.3,panck:0.02},
+  alcl:{cd30:0.98,alk:0.55,ema:0.8,cd3:0.3,cd45:0.6,pax5:0.03,cd20:0.03,cd15:0.1,panck:0.05,ki67:0.85},
+  castleman:{cd20:0.9,cd45:0.9,cd3:0.7,cd138:0.5,hhv8:0.15,bcl2:0.4,ki67:0.4,panck:0.02},
+  nodalmet:{panck:0.75,cd45:0.03,sox10:0.2,s100:0.25,melana:0.15,ck7:0.4,ttf1:0.15,gata3:0.15,pax8:0.1,cdx2:0.1,p40:0.2,pax5:0.05},
+  sinushistiocytosis:{cd68:0.95,cd163:0.95,s100:0.25,cd1a:0.03,langerin:0.02,panck:0.03,cd45:0.8},
   glomus:{dog1:0.03,cd117:0.03,syn:0.05,chromo:0.03,insm1:0.04,cd56:0.4,panck:0.02,s100:0.03,cdx2:0.02,ck20:0.02,gata3:0.03},
   /* histiocytic neoplasms and predictive markers */
   alkhistio:{alk:0.95,cd68:0.9,cd163:0.9,fxiiia:0.7,s100:0.5,cd1a:0.03,langerin:0.02,panck:0.03,sox10:0.03,melana:0.02,brafv600e:0.03,cathk:0.4,desmin:0.03},
@@ -6313,6 +6529,15 @@ function goHome(){
   priorView = "intro";
   syncHeader(); window.scrollTo(0,0);
 }
+/* Registering the service worker is what makes the tool installable and lets it
+   run with no connection. It fails silently when the page is opened straight
+   from a file, which is the expected behaviour offline or during development. */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+
 $("homeBtn").onclick = goHome;
 $("startBtn").onclick = enterCase;
 $("resetBtn").onclick = enterCase;
