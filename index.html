@@ -3,7 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PathoPanel — morphology-guided IHC selection</title>
+<title>PathoPanel — morphology-guided IHC selection for pathologists</title>
+<meta name="description" content="A free teaching tool for pathology trainees. Describe the morphology and PathoPanel ranks a differential, then works out which immunohistochemical stain would do most to separate it. 394 entities and 150 antibodies across thirteen organ systems.">
+<meta name="author" content="Dr Nixon Dangol">
+<meta name="keywords" content="immunohistochemistry, IHC panel, surgical pathology, differential diagnosis, pathology education, histopathology, residency, FRCPath">
+
+<!-- Set these two to your live address once the site is deployed. If you host the
+     same file on more than one domain, point the canonical link at whichever one
+     you want search engines to treat as the real site. -->
+<link rel="canonical" href="https://pathnixon-dev.github.io/pathopanel/">
+<meta property="og:url" content="https://pathnixon-dev.github.io/pathopanel/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PathoPanel">
+<meta property="og:title" content="PathoPanel — morphology-guided IHC selection">
+<meta property="og:description" content="Describe the morphology and PathoPanel ranks a differential, then works out which stain would do most to separate it. A free teaching tool for pathology trainees.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PathoPanel — morphology-guided IHC selection">
+<meta name="twitter:description" content="Choose the stain that separates your differential, not the stain that names your hunch. A free teaching tool for pathology trainees.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PathoPanel",
+  "applicationCategory": "EducationalApplication",
+  "description": "A teaching tool for pathology trainees that ranks a differential diagnosis from morphology and recommends the most informative immunohistochemical stain.",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "Dr Nixon Dangol" },
+  "audience": { "@type": "Audience", "audienceType": "Pathology residents and trainees" }
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -310,8 +341,8 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding-top:16px;
       </div>
 
       <h2 class="secthead">References</h2>
-      <p>The library was built from three sources. Entity selection, expected staining patterns and pitfalls were drawn
-      from them and cross-checked against each other. All text in this tool was written fresh rather than reproduced,
+      <p>Entity selection, expected staining patterns and pitfalls were drawn from these sources and cross-checked
+      against each other. All text in this tool was written fresh rather than reproduced,
       and none of their figures, tables or slide collections are included here. Where the sources disagreed, the more
       recent was followed, and the disagreements are recorded in the build notes.</p>
       <ol class="refs">
