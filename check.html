@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PathoPanel — install check</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:44rem;margin:0 auto;padding:20px;
+  background:#EFEBF2;color:#191720;line-height:1.5}
+h1{font-size:21px;margin:0 0 4px}
+p.lead{color:#6B6478;margin:0 0 20px;font-size:15px}
+.row{display:flex;gap:10px;padding:9px 0;border-top:1px solid #DCD5E4;align-items:flex-start}
+.row:first-of-type{border-top:none}
+.s{flex:none;width:1.6em;font-size:17px;line-height:1.35}
+.k{flex:none;width:11em;font-weight:600;font-size:14px}
+.v{flex:1;font-size:14px;word-break:break-word;color:#3a3546}
+.ok{color:#2f6b3f}.bad{color:#a3302a}.warn{color:#8A6A1E}
+h2{font-size:15px;margin:24px 0 2px}
+#verdict{margin-top:24px;padding:14px 16px;border-radius:4px;background:#fff;
+  border-left:3px solid #4B3A8C;font-size:15px}
+button{margin-top:16px;background:#4B3A8C;color:#fff;border:none;border-radius:4px;
+  padding:11px 20px;font-size:15px;cursor:pointer}
+code{background:#fff;padding:1px 5px;border-radius:3px;font-size:13px}
+</style>
+</head>
+<body>
+<h1>PathoPanel install check</h1>
+<p class="lead">Open this page on the phone you are testing, on the same site as the app.
+Every line that is not a tick is a reason the install prompt will not appear.</p>
+
+<h2>Serving</h2><div id="serving"></div>
+<h2>Manifest</h2><div id="manifest"></div>
+<h2>Icons</h2><div id="icons"></div>
+<h2>Service worker</h2><div id="sw"></div>
+<h2>Browser</h2><div id="browser"></div>
+
+<div id="verdict">Running checks…</div>
+<button id="installBtn" hidden>Install PathoPanel</button>
+
+<script>
+const $ = id => document.getElementById(id);
+function row(where, state, key, value){
+  const mark = state === "ok" ? "✓" : state === "bad" ? "✕" : "!";
+  $(where).insertAdjacentHTML("beforeend",
+    `<div class="row"><div class="s ${state}">${mark}</div><div class="k">${key}</div><div class="v">${value}</div></div>`);
+}
+const problems = [];
+function fail(msg){ problems.push(msg); }
+let promptFired = false, deferred = null;
+/* Some embedded browsers lack matchMedia, so never call it unguarded. */
+function isStandalone(){
+  try{
+    return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches)
+        || window.navigator.standalone === true;
+  }catch(e){ return false; }
+}
+
+(async function run(){
+  // ---- serving ----
+  const secure = location.protocol === "https:" || location.hostname === "localhost";
+  row("serving", secure ? "ok" : "bad", "Secure origin", location.protocol + "//" + location.host);
+  if(!secure) fail("The page is not served over https, which service workers require.");
+  row("serving", "ok", "Page address", location.pathname);
+
+  // ---- manifest ----
+  let mf = null;
+  const link = document.querySelector('link[rel="manifest"]');
+  const mfUrl = new URL("manifest.json", location.href).href;
+  try{
+    const r = await fetch(mfUrl, {cache:"no-store"});
+    row("manifest", r.ok ? "ok" : "bad", "Fetch", r.status + " " + r.statusText);
+    if(!r.ok) fail("manifest.json did not load. Check it is uploaded to the site root.");
+    const ct = r.headers.get("content-type") || "(none)";
+    row("manifest", /json|manifest/i.test(ct) ? "ok" : "warn", "Content-Type", ct);
+    if(r.ok){
+      const text = await r.text();
+      try{
+        mf = JSON.parse(text);
+        row("manifest", "ok", "Valid JSON", "parsed");
+      }catch(e){
+        row("manifest", "bad", "Valid JSON", e.message);
+        fail("manifest.json is not valid JSON.");
+      }
+    }
+  }catch(e){
+    row("manifest", "bad", "Fetch", e.message);
+    fail("manifest.json could not be fetched at all.");
+  }
+
+  if(mf){
+    for(const key of ["name","short_name","start_url","display"]){
+      const has = !!mf[key];
+      row("manifest", has ? "ok" : "bad", key, has ? String(mf[key]) : "missing");
+      if(!has) fail("The manifest is missing " + key + ".");
+    }
+    const disp = ["standalone","fullscreen","minimal-ui"].includes(mf.display);
+    if(!disp) fail("display must be standalone, fullscreen or minimal-ui.");
+  }
+
+  // ---- icons ----
+  if(mf && Array.isArray(mf.icons)){
+    let big = false, mid = false;
+    for(const ic of mf.icons){
+      const url = new URL(ic.src, mfUrl).href;
+      try{
+        const r = await fetch(url, {cache:"no-store"});
+        const size = parseInt(String(ic.sizes).split("x")[0], 10) || 0;
+        if(r.ok && size >= 512) big = true;
+        if(r.ok && size >= 192) mid = true;
+        row("icons", r.ok ? "ok" : "bad", ic.sizes + (ic.purpose ? " " + ic.purpose : ""),
+            (r.ok ? "" : r.status + " — ") + ic.src);
+        if(!r.ok) fail("Icon not found: " + ic.src);
+      }catch(e){
+        row("icons", "bad", ic.sizes, ic.src + " — " + e.message);
+        fail("Icon could not be fetched: " + ic.src);
+      }
+    }
+    if(!mid) fail("No usable icon of at least 192 pixels.");
+    if(!big) fail("No usable icon of at least 512 pixels.");
+  }else{
+    row("icons", "bad", "icons", "no icon array in the manifest");
+  }
+
+  // ---- service worker ----
+  if(!("serviceWorker" in navigator)){
+    row("sw", "bad", "Supported", "no");
+    fail("This browser does not support service workers.");
+  }else{
+    row("sw", "ok", "Supported", "yes");
+    try{
+      const r = await fetch(new URL("sw.js", location.href).href, {cache:"no-store"});
+      row("sw", r.ok ? "ok" : "bad", "sw.js fetch", r.status + " " + r.statusText);
+      if(!r.ok) fail("sw.js did not load. Check it is uploaded to the site root.");
+    }catch(e){
+      row("sw", "bad", "sw.js fetch", e.message);
+      fail("sw.js could not be fetched.");
+    }
+    try{
+      const reg = await navigator.serviceWorker.register(new URL("sw.js", location.href).href);
+      row("sw", "ok", "Registered", "scope " + reg.scope);
+      await navigator.serviceWorker.ready;
+      row("sw", "ok", "Active", "controlling this scope");
+    }catch(e){
+      row("sw", "bad", "Registered", e.message);
+      fail("The service worker failed to register: " + e.message);
+    }
+  }
+
+  // ---- browser ----
+  const ua = navigator.userAgent;
+  const isiOS = /iPad|iPhone|iPod/.test(ua);
+  const standalone = isStandalone();
+  row("browser", "ok", "Already installed", standalone ? "yes, running installed" : "no");
+  row("browser", isiOS ? "warn" : "ok", "Platform", isiOS ? "iOS — no install prompt exists" : "not iOS");
+  if(isiOS) fail("On iPhone and iPad there is never an install prompt. Use Share, then Add to Home Screen.");
+  row("browser", "ok", "User agent", ua);
+
+  // ---- verdict ----
+  setTimeout(() => {
+    if(standalone){
+      $("verdict").innerHTML = "<b>Already installed.</b> You are running the installed app right now, which is why no prompt appears.";
+    }else if(problems.length){
+      $("verdict").innerHTML = "<b>Not installable yet. " + problems.length +
+        " thing" + (problems.length>1?"s":"") + " to fix:</b><ul><li>" + problems.join("</li><li>") + "</li></ul>";
+    }else if(!promptFired){
+      $("verdict").innerHTML = "<b>Everything required is in place.</b> No prompt has fired yet. " +
+        "Chrome often waits for a little engagement, and it will not re-prompt if you dismissed it before. " +
+        "Open the browser menu and look for <code>Install app</code> or <code>Add to Home screen</code>: " +
+        "if that entry is there, installation works.";
+    }
+  }, 1200);
+})();
+
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  deferred = e; promptFired = true;
+  $("installBtn").hidden = false;
+  $("verdict").innerHTML = "<b>Installable.</b> The browser fired the install event. Use the button below.";
+});
+$("installBtn").onclick = async () => {
+  if(!deferred) return;
+  deferred.prompt();
+  const { outcome } = await deferred.userChoice;
+  $("verdict").innerHTML = "<b>You chose: " + outcome + "</b>";
+  deferred = null;
+};
+</script>
+</body>
+</html>
