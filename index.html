@@ -8,11 +8,12 @@
 <meta name="author" content="Dr Nixon Dangol">
 <meta name="keywords" content="immunohistochemistry, IHC panel, surgical pathology, differential diagnosis, pathology education, histopathology, residency, FRCPath">
 
-<!-- The site is published on both Neocities and GitHub Pages. Neocities is the
-     canonical address, so this pair must stay identical in BOTH copies of the
-     file: it is what stops the two versions competing with each other. -->
-<link rel="canonical" href="https://pathopanel.neocities.org/">
-<meta property="og:url" content="https://pathopanel.neocities.org/">
+<!-- Published on GitHub Pages, which is the canonical address because Neocities
+     free accounts set worker-src blob: and so cannot register a service worker.
+     This pair must stay identical in BOTH copies of the file: it is what stops
+     the two versions competing with each other in search results. -->
+<link rel="canonical" href="https://pathnixon-dev.github.io/pathopanel/">
+<meta property="og:url" content="https://pathnixon-dev.github.io/pathopanel/">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PathoPanel">
@@ -24,6 +25,17 @@
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#4B3A8C">
+<script>
+window.__pp_install = null;
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  window.__pp_install = e;
+  window.dispatchEvent(new Event("pp-install-ready"));
+});
+</script>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -172,6 +184,14 @@ header{
   font-size:15.5px;display:inline-block}
 .contact a{color:var(--dab);font-weight:500}
 .frontnote{font-size:14.5px;color:var(--muted);margin-top:26px;max-width:62ch}
+#installPanel{display:none;margin-top:28px;max-width:62ch;background:var(--panel);
+  border:1px solid var(--line);border-left:3px solid var(--hem);border-radius:0;padding:16px 18px}
+#installPanel h3{margin:0 0 6px;font-size:16px;font-weight:600;color:var(--ink)}
+#installPanel p{margin:0;font-size:14.5px;color:var(--muted);line-height:1.55}
+#installPanel ol{margin:10px 0 0;padding-left:20px;font-size:14.5px;color:var(--muted);line-height:1.7}
+#installBtn{margin-top:12px;background:var(--hem);color:#fff;border:0;border-radius:var(--r);
+  padding:10px 18px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+#installBtn:hover{background:var(--hem-deep)}
 .linklike{background:none;border:none;padding:0;color:var(--hem);
   font-size:inherit;text-decoration:underline}
 .ddxnote{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);
@@ -292,6 +312,13 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding-top:16px;
       <p class="frontnote">A teaching tool for pathology training. It does not make diagnoses, and its percentages are
       relative to its own library rather than to any patient.
       <button class="linklike" id="introAbout">About, references and limitations</button></p>
+
+      <div id="installPanel">
+        <h3 id="installTitle">Install PathoPanel</h3>
+        <p id="installText"></p>
+        <ol id="installSteps" hidden></ol>
+        <button id="installBtn" hidden>Install</button>
+      </div>
     </div>
   </div>
 
@@ -6542,6 +6569,69 @@ $("homeBtn").onclick = goHome;
 $("startBtn").onclick = enterCase;
 $("resetBtn").onclick = enterCase;
 syncHeader();
+</script>
+<script>
+(function(){
+  var panel = document.getElementById("installPanel");
+  var text  = document.getElementById("installText");
+  var steps = document.getElementById("installSteps");
+  var btn   = document.getElementById("installBtn");
+  var title = document.getElementById("installTitle");
+
+  function installed(){
+    return window.matchMedia("(display-mode: standalone)").matches ||
+           window.navigator.standalone === true;
+  }
+
+  var ua = navigator.userAgent;
+  var isIOS = /iPad|iPhone|iPod/.test(ua) ||
+              (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+  function showPrompt(){
+    title.textContent = "Install PathoPanel";
+    text.textContent = "Add it to your home screen. It then opens in its own window and works without a connection.";
+    steps.hidden = true;
+    btn.hidden = false;
+    panel.style.display = "block";
+  }
+
+  function showIOS(){
+    title.textContent = "Add PathoPanel to your home screen";
+    text.textContent = "Safari installs web apps manually.";
+    steps.innerHTML = "<li>Tap the Share button at the bottom of the screen.</li>" +
+                      "<li>Scroll down and choose Add to Home Screen.</li>" +
+                      "<li>Tap Add.</li>";
+    steps.hidden = false;
+    btn.hidden = true;
+    panel.style.display = "block";
+  }
+
+  if(installed()) return;
+  if(window.__pp_install) showPrompt();
+  window.addEventListener("pp-install-ready", showPrompt);
+  if(isIOS && !window.navigator.standalone) showIOS();
+
+  btn.addEventListener("click", async function(){
+    var e = window.__pp_install;
+    if(!e) return;
+    btn.disabled = true;
+    e.prompt();
+    var choice = await e.userChoice;
+    window.__pp_install = null;
+    if(choice.outcome === "accepted"){
+      panel.style.display = "none";
+    } else {
+      btn.disabled = false;
+      btn.hidden = true;
+      title.textContent = "Install PathoPanel later";
+      text.textContent = "Use the browser menu and look for Install, or Add to Home screen.";
+    }
+  });
+
+  window.addEventListener("appinstalled", function(){
+    panel.style.display = "none";
+  });
+})();
 </script>
 </body>
 </html>
