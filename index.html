@@ -186,6 +186,21 @@ header{
 .frontnote{font-size:14.5px;color:var(--muted);margin-top:26px;max-width:62ch}
 #installPanel{display:none;margin-top:28px;max-width:62ch;background:var(--panel);
   border:1px solid var(--line);border-left:3px solid var(--hem);border-radius:0;padding:16px 18px}
+.featbox{border:1px solid var(--line);background:var(--panel);border-radius:var(--r);
+  margin-top:10px;overflow:hidden}
+.featinput{width:100%;border:0;border-bottom:1px solid var(--line);padding:11px 13px;
+  font-size:15px;font-family:inherit;color:var(--ink);background:var(--panel);outline:none}
+.featinput:focus{border-bottom-color:var(--hem)}
+.featlist{max-height:260px;overflow-y:auto}
+.featrow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;width:100%;
+  text-align:left;background:none;border:0;border-bottom:1px solid var(--slide);
+  padding:9px 13px;font-size:14.5px;font-family:inherit;color:var(--ink);cursor:pointer}
+.featrow:hover{background:var(--hem-soft)}
+.featgrp{font-size:12px;color:var(--muted);white-space:nowrap;text-transform:uppercase;
+  letter-spacing:.04em}
+.featempty{padding:14px 13px;font-size:14px;color:var(--muted)}
+.featfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:8px 13px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
 #installPanel h3{margin:0 0 6px;font-size:16px;font-weight:600;color:var(--ink)}
 #installPanel p{margin:0;font-size:14.5px;color:var(--muted);line-height:1.55}
 #installPanel ol{margin:10px 0 0;padding-left:20px;font-size:14.5px;color:var(--muted);line-height:1.7}
@@ -2866,7 +2881,7 @@ const ENTITIES = [
  morph:"Central fibroelastotic core from which entrapped distorted ducts radiate outwards, with proliferative changes at the periphery.",
  mol:"Benign, but excision is usual because carcinoma can arise within it.",
  f:{age:{peds:0.02,ya:0.6,mid:1.6,old:0.7}, bxcell:{ductal:1.8,apocrine:0.3}, bxarch:{sclerosed:2,tubules:1,flat:0.3}, bxmyoep:{present:2.2,attenuated:0.5,absent:0.02,na:0.1}, bxgrade:{low:1.8,intermediate:0.4,high:0.03}, bxstroma:{hyalinised:2.2,none:0.3}, bxclue:{radiating:2.6,calcs:0.7,none:0.4}, necrosis:{absent:0.98,present:0.03}, mitoses:{low:1.3,brisk:0.1}, bxhist:{screening:2,none:0.6}}},
-{id:"microglandular", name:"Microglandular adenosis", grp:"Benign, myoepithelium-negative", prior:0.2, mods:["breast"],
+{id:"microglandularad", name:"Microglandular adenosis", grp:"Benign, myoepithelium-negative", prior:0.2, mods:["breast"],
  morph:"Haphazard small round uniform glands with a single layer of bland cuboidal cells and eosinophilic intraluminal secretion, infiltrating fat without a lobular arrangement.",
  mol:"Copy number changes and TP53 mutation. Regarded as a non-obligate precursor of basal-like carcinoma.",
  f:{age:{peds:0.02,ya:0.6,mid:1.4,old:0.8}, bxcell:{ductal:1.6,secretory:0.6}, bxarch:{tubules:2.4,sclerosed:0.3}, bxmyoep:{absent:2.6,attenuated:0.2,present:0.02,na:0.1}, bxgrade:{low:2.2,intermediate:0.2,high:0.02}, bxstroma:{none:1.2,hyalinised:0.6,desmoplastic:0.1}, bxclue:{secretions:2,none:0.8}, necrosis:{absent:0.99,present:0.01}, mitoses:{low:1.4,brisk:0.03}, bxhist:{mass:1,screening:0.7,none:0.8}}},
@@ -2882,6 +2897,14 @@ const ENTITIES = [
  morph:"Circumscribed biphasic lesion with compressed slit-like or open glands set in a uniformly cellular but bland stroma.",
  mol:"MED12 mutation in most.",
  f:{age:{peds:0.9,ya:2,mid:0.8,old:0.2}, bxcell:{ductal:1.4,spindle:0.5}, bxarch:{tubules:1.4,intracystic:0.4,flat:0.4,papillary:0.2}, bxmyoep:{present:2.2,attenuated:0.3,absent:0.02,na:0.2}, bxgrade:{low:2.2,intermediate:0.2,high:0.02}, bxstroma:{periductal:1.6,hyalinised:0.7,myxoid:0.7,none:0.4}, bxclue:{calcs:0.6,none:1.2}, necrosis:{absent:0.99,present:0.01}, mitoses:{low:1.4,brisk:0.05}, bxhist:{mass:2,screening:0.6,none:0.5}}},
+{id:"pleoadenomabx", name:"Pleomorphic adenoma of breast", grp:"Myoepithelial", prior:0.12, mods:["breast"],
+ morph:"Circumscribed nodule, usually subareolar and small, with epithelial tubules and a myoepithelial component that merges into a chondromyxoid matrix. The cartilaginous or myxoid stroma is the feature that separates it from every other benign breast nodule, and the epithelial component alone can be mistaken for an intraductal papilloma.",
+ mol:"PLAG1 rearrangement, as in the salivary gland lesion. Demonstrating PLAG1 supports the diagnosis when the chondromyxoid stroma is scanty.",
+ f:{age:{peds:0.1,ya:0.8,mid:1.6,old:1.0}, bxcell:{ductal:1.2,spindle:1.0,basaloid:0.8,squamous:0.5}, bxarch:{tubules:1.6,solid:1.0,papillary:0.8,sclerosed:0.6,cribriform:0.2}, bxmyoep:{present:2.6,attenuated:0.3,absent:0.02,na:0.3}, bxgrade:{low:2.4,intermediate:0.2,high:0.02}, bxstroma:{myxoid:3.0,hyalinised:1.4,periductal:0.4,none:0.2,desmoplastic:0.1}, bxclue:{none:1.2,calcs:0.6,heterologous:1.4}, necrosis:{absent:0.99,present:0.01}, mitoses:{low:1.5,brisk:0.05}, bxhist:{mass:2.0,screening:0.6,none:0.5}}},
+{id:"adenomyoep", name:"Adenomyoepithelioma", grp:"Myoepithelial", prior:0.2, mods:["breast"],
+ morph:"Biphasic nodule of small glands cuffed by an expanded myoepithelial layer with clear or eosinophilic cytoplasm. The myoepithelial cells are the dominant population, which is what distinguishes it from a papilloma, and there is no chondromyxoid matrix.",
+ mol:"HRAS Q61 mutation with PIK3CA or PIK3R1 alterations in the oestrogen-receptor-negative group.",
+ f:{age:{peds:0.05,ya:0.5,mid:1.4,old:1.4}, bxcell:{ductal:1.2,spindle:1.0,apocrine:0.8,basaloid:0.6}, bxarch:{tubules:2.2,solid:1.2,papillary:1.0,sclerosed:0.8,cribriform:0.2}, bxmyoep:{present:3.0,attenuated:0.2,absent:0.02,na:0.3}, bxgrade:{low:2.0,intermediate:0.5,high:0.05}, bxstroma:{hyalinised:1.4,none:1.0,myxoid:0.6,periductal:0.4,desmoplastic:0.2}, bxclue:{none:1.4,calcs:0.5}, necrosis:{absent:0.95,present:0.1}, mitoses:{low:1.4,brisk:0.15}, bxhist:{mass:2.0,screening:0.7,none:0.5}}},
 {id:"phyllodes", name:"Phyllodes tumour", grp:"Fibroepithelial", prior:0.5, mods:["breast"],
  morph:"Exaggerated leaf-like architecture with stromal condensation beneath the epithelium and increased stromal cellularity, graded by cellularity, atypia, mitoses and the margin.",
  mol:"MED12 mutation with TERT promoter alteration; malignant tumours accumulate further changes.",
@@ -3866,7 +3889,7 @@ const ENTITIES = [
  morph:"Compact non-necrotising granulomas with giant cells and surrounding fibrosis, patchily distributed and often involving the basal septum.",
  mol:"Sampling error is the difficulty, since endomyocardial biopsy misses it frequently. Infection must be excluded first.",
  f:{cvsite:{endomyocardial:2,myocardium:2,valve:0.05,cardiacmass:0.05,largeartery:0.05,mediumartery:0.05,smallvessel:0.05}, age:{peds:0.15,ya:1.2,mid:1.4,old:0.6}, cvcell:{giantcells:2,histiocytes:2.4,lymphocytes:1,fibrous:0.8}, cvarch:{interstitialinf:1.8,replacementfibrosis:1.4}, cvclue:{granulomasvessel:1,nonecv:1.4}, necrosis:{absent:1.2,present:0.3}, mitoses:{low:1.4,brisk:0.06}, cvhist:{heartfailure:1.8,nonecv:1}}},
-{id:"myxoma", name:"Cardiac myxoma", grp:"Cardiac tumour", prior:0.4, mods:["cardio"],
+{id:"cardiacmyxoma", name:"Cardiac myxoma", grp:"Cardiac tumour", prior:0.4, mods:["cardio"],
  morph:"Scattered bland stellate and spindled myxoma cells forming rings and cords around vessels, in an abundant myxoid matrix, in the left atrium attached to the fossa ovalis.",
  mol:"PRKAR1A mutation. Multiple or unusually sited myxomas raise the Carney complex, where the same gene is germline altered.",
  f:{cvsite:{cardiacmass:3,myocardium:0.3,valve:0.2,endomyocardial:0.2,largeartery:0.02,mediumartery:0.02,smallvessel:0.02}, age:{peds:0.3,ya:1.2,mid:1.4,old:0.7}, cvcell:{stellate:3,endothelialcv:0.5,histiocytes:0.4}, cvarch:{myxoidmass:3,papillaryfronds:0.3}, cvclue:{nonecv:1.8}, necrosis:{absent:0.95,present:0.1}, mitoses:{low:1.4,brisk:0.05}, cvhist:{nonecv:1.8}}},
@@ -3890,7 +3913,7 @@ const ENTITIES = [
  morph:"Expansion of the spongiosa by myxoid matrix with fragmentation of the fibrosa, producing a thickened redundant leaflet that prolapses.",
  mol:"The commonest cause of isolated mitral regurgitation in developed countries. Associated with Marfan and other connective tissue disorders.",
  f:{cvsite:{valve:3,cardiacmass:0.1,myocardium:0.05,endomyocardial:0.05,largeartery:0.05,mediumartery:0.02,smallvessel:0.02}, age:{peds:0.2,ya:0.9,mid:1.4,old:1.2}, cvcell:{stellate:1.6,fibrous:1.6}, cvarch:{valvethickening:2.8,myxoidmass:1.4}, cvclue:{nonecv:2}, necrosis:{absent:0.99,present:0.02}, mitoses:{low:1.4,brisk:0.03}, cvhist:{heartfailure:1.2,nonecv:1.6}}},
-{id:"gca", name:"Giant cell arteritis", grp:"Vasculitis", prior:0.4, mods:["cardio"],
+{id:"gcarteritis", name:"Giant cell arteritis", grp:"Vasculitis", prior:0.4, mods:["cardio"],
  morph:"Transmural granulomatous inflammation of a large artery with giant cells at the fragmented internal elastic lamina, segmental and with skip lesions.",
  mol:"Elastic stains show the lamina destruction. Skip lesions mean a negative temporal artery biopsy does not exclude it.",
  f:{cvsite:{largeartery:3,mediumartery:0.6,smallvessel:0.1,myocardium:0.05,valve:0.02,cardiacmass:0.02,endomyocardial:0.02}, age:{peds:0.02,ya:0.05,mid:0.5,old:2.6}, cvcell:{giantcells:2.6,histiocytes:1.6,lymphocytes:1.2}, cvarch:{vesselwallinf:3,intimalthickening:1}, cvclue:{granulomasvessel:2.6,nonecv:0.4}, necrosis:{absent:0.9,present:0.2}, mitoses:{low:1.4,brisk:0.05}, cvhist:{headache:3,nonecv:0.2}}},
@@ -5704,7 +5727,7 @@ const PROFILES = {
   fea:{er:0.97,pr:0.8,ck56:0.04,p63:0.95,calponin:0.9,smmhc:0.9,ecad:0.92,her2:0.03,panck:0.97,trps1:0.9},
   sclerosingadenosis:{p63:0.97,calponin:0.95,smmhc:0.95,ck56:0.5,er:0.7,panck:0.97,trps1:0.9},
   radialscar:{p63:0.97,calponin:0.95,smmhc:0.95,ck56:0.6,er:0.7,panck:0.97,trps1:0.9},
-  microglandular:{p63:0.03,calponin:0.03,smmhc:0.03,s100:0.95,er:0.03,pr:0.03,her2:0.03,panck:0.95,ck7:0.9,trps1:0.3},
+  microglandularad:{p63:0.03,calponin:0.03,smmhc:0.03,s100:0.95,er:0.03,pr:0.03,her2:0.03,panck:0.95,ck7:0.9,trps1:0.3},
   collagenousspher:{p63:0.9,calponin:0.95,smmhc:0.9,ck56:0.6,myb:0.05,er:0.5,panck:0.95},
   papilloma:{p63:0.95,calponin:0.9,smmhc:0.9,ck56:0.7,er:0.7,ecad:0.92,panck:0.97,trps1:0.9},
   fibroadenoma:{p63:0.95,calponin:0.9,smmhc:0.9,er:0.7,cd34:0.6,panck:0.5,trps1:0.6},
@@ -5770,6 +5793,8 @@ const PROFILES = {
   analpaget:{ck7:0.9,ck20:0.4,cdx2:0.35,gcdfp15:0.5,gata3:0.4,p40:0.03,ck56:0.03,sox10:0.03,melana:0.02,panck:0.95},
 
   /* head and neck module */
+  pleoadenomabx:{plag1:0.85,s100:0.9,sox10:0.85,p63:0.9,p40:0.75,calponin:0.9,smmhc:0.85,sma:0.8,gfap:0.4,panck:0.9,ck7:0.7,er:0.2,trps1:0.4,ecad:0.7},
+  adenomyoep:{p63:0.92,calponin:0.9,smmhc:0.88,sma:0.85,s100:0.8,sox10:0.7,panck:0.95,ck7:0.9,plag1:0.05,er:0.3,gfap:0.05,trps1:0.6},
   pleoadenoma:{plag1:0.85,s100:0.9,sox10:0.9,p63:0.9,p40:0.8,calponin:0.9,sma:0.8,gfap:0.5,panck:0.9,ck7:0.7},
   warthin:{panck:0.97,ck7:0.8,p63:0.8,cd45:0.9,dog1:0.05,sox10:0.1,s100:0.1},
   oncocytoma:{panck:0.97,p63:0.7,ck7:0.6,dog1:0.05,sox10:0.15,s100:0.1,cd45:0.05},
@@ -5969,13 +5994,13 @@ const PROFILE_PATCH = {
   cardiacamyloid:{ttrmarker:0.55,cd138:0.15,desmin:0.5,panck:0.03,cd45:0.15},
   giantcellmyocarditis:{cd68:0.95,cd45:0.9,cd3:0.8,desmin:0.4,panck:0.03},
   cardiacsarcoid:{cd68:0.95,cd45:0.85,cd3:0.7,desmin:0.4,panck:0.03},
-  myxoma:{calretinin:0.85,cd34:0.6,cd31:0.4,erg:0.4,panck:0.05,s100:0.15,desmin:0.05,sma:0.3},
+  cardiacmyxoma:{calretinin:0.85,cd34:0.6,cd31:0.4,erg:0.4,panck:0.05,s100:0.15,desmin:0.05,sma:0.3},
   fibroelastoma:{cd31:0.85,erg:0.85,cd34:0.7,calretinin:0.15,panck:0.05,sma:0.3},
   rhabdomyoma_cardiac:{desmin:0.95,myogenin:0.4,myod1:0.5,sma:0.7,panck:0.03,s100:0.1},
   infectiveendocarditis:{cd68:0.7,cd45:0.7,panck:0.03,calretinin:0.05},
   rheumatic:{cd68:0.8,cd45:0.7,sma:0.5,calretinin:0.05},
   myxomatousvalve:{calretinin:0.1,cd34:0.5,sma:0.5,cd31:0.4,panck:0.03},
-  gca:{cd68:0.9,cd45:0.85,cd3:0.8,sma:0.7,cd31:0.6},
+  gcarteritis:{cd68:0.9,cd45:0.85,cd3:0.8,sma:0.7,cd31:0.6},
   pan:{cd68:0.8,cd45:0.85,cd3:0.6,sma:0.7,cd31:0.6},
   gpa:{cd68:0.9,cd45:0.9,cd3:0.7,cd31:0.5,sma:0.5},
   egpa:{cd68:0.8,cd45:0.9,cd3:0.7,cd31:0.5,sma:0.5},
@@ -6043,6 +6068,158 @@ const PROFILE_PATCH = {
   hirschsprung:{ck20:0.85,cdx2:0.9},
   eoe:{ck7:0.05,cdx2:0.03}
 };
+/* ============================================================
+   3b. CROSS-SYSTEM METASTASES
+   A metastasis is authored once here, then expanded into a native entity in
+   each target module. Expansion is needed because LIK is keyed by question id
+   and every module has its own namespace: gcell, bxcell, gicell and so on. An
+   entity borrowed from another module would match none of those keys, so it
+   would ignore every morphology answer and float on its prior alone.
+
+   base   features shared by all modules (age, necrosis, mitoses)
+   stains the immunoprofile of the primary, applied in every target
+   targets one entry per module: feature weights in that module's namespace,
+          an optional prior, and optional stain overrides for that site
+   ============================================================ */
+const METASTASES = [
+  {
+    id:"met_ilc", name:"Metastatic lobular carcinoma of breast",
+    morph:"Bilateral ovarian involvement by small discohesive cells in single files and thin cords, often with signet ring forms and intracytoplasmic lumina. Nuclei are low grade and mitoses are few, which is why the deposit is easily read as a stromal or sex cord lesion.",
+    mol:"CDH1 loss, so E-cadherin is absent and p120 catenin is cytoplasmic. E-cadherin loss does not separate this from diffuse gastric carcinoma, which loses CDH1 by the same route. GATA3 and TRPS1 against CDX2 and SATB2 make that distinction.",
+    base:{age:{peds:0.02,ya:0.3,mid:1.3,old:1.2}, necrosis:{present:0.4,absent:1.2}, mitoses:{low:1.3,brisk:0.4}},
+    stains:{ecad:0.06,p120:0.05,gata3:0.92,trps1:0.95,er:0.95,pr:0.75,ck7:0.95,panck:0.97,
+            gcdfp15:0.5,mammaglobin:0.5,pax8:0.03,wt1n:0.03,cdx2:0.05,satb2:0.03,ck20:0.05,
+            napsin:0.02,inhibin:0.02,calretinin:0.03,sf1:0.02,sox10:0.06},
+    targets:{
+      gyn:{prior:0.55,
+        f:{gsite:{ovary:2.2,tube:0.15,endometrium:0.1,myometrium:0.05,cervix:0.05,vulvovag:0.02,poc:0.02},
+           gcell:{signet:1.8,srbc:1.2,mucinous:0.5,spindle:0.4,sexcord:0.3,endometrioid:0.1,clear:0.1},
+           garch:{cords:1.8,nested:1.0,solid:0.8,glandular:0.4,cribriform:0.2,papillary:0.1,cystic:0.2},
+           gatypia:{mild:1.5,bland:0.9,high:0.4},
+           gstroma:{desmoplastic:1.5,fibromatous:0.9,ovarian:0.7,none:0.4},
+           gclue:{none:1.0,intravascular:1.2,dirtynecrosis:0.2,psammoma:0.1,callexner:0.05},
+           ghist:{priorca:3.0,none:0.25}}},
+      ln:{prior:0.5,
+        f:{lnpattern:{metastaticdeposit:2.4,sinusoidal:1.2,diffuse:0.5,preserved:0.4},
+           lncell:{epithelial:2.2,plasmacell:0.3,smalllymph:0.1},
+           lnclue:{noneln:1.0,lymphoepithelialln:0.3},
+           lnhist:{knownca:2.6,noneln:0.3}}},
+      bone:{prior:0.5,
+        f:{bloc:{axial:1.8,metaphysis:0.8,diaphysis:0.6,epiphysis:0.4,craniofacial:0.4},
+           bpattern:{sclerotic:1.6,permeative:1.4,welldefined:0.3},
+           bcells:{plasmacytoid:1.0,histiocytoid:0.9,pleo:0.6,srbc:0.5,osteoblastic:0.1,chondrocytic:0.05},
+           bmatrix:{none:1.4,fibrous:0.6,osteoid:0.1,chondroid:0.05},
+           bgiant:{none:1.2,few:0.7,many:0.2},
+           bhist:{priorca:3.0,nightpain:1.0,none:0.2}}}
+    }
+  },
+  {
+    id:"met_gastric_diffuse", name:"Metastatic diffuse gastric carcinoma (Krukenberg)",
+    morph:"Bilateral ovarian masses with signet ring cells scattered in a cellular, oedematous or luteinised ovarian stroma. The stromal reaction is often more conspicuous than the tumour cells, and a low-power impression of a fibroma is a recognised trap.",
+    mol:"CDH1 loss in the diffuse type, shared with lobular breast carcinoma. Lineage markers rather than E-cadherin separate the two.",
+    base:{age:{peds:0.05,ya:0.8,mid:1.3,old:0.9}, necrosis:{present:0.6,absent:1.0}, mitoses:{low:0.9,brisk:0.9}},
+    stains:{ck7:0.6,ck20:0.5,cdx2:0.6,satb2:0.15,ecad:0.15,p120:0.15,panck:0.97,
+            gata3:0.08,trps1:0.05,er:0.05,pr:0.05,pax8:0.03,wt1n:0.03,
+            gcdfp15:0.02,mammaglobin:0.02,napsin:0.02,inhibin:0.02,calretinin:0.03,sf1:0.02},
+    targets:{
+      gyn:{prior:0.6,
+        f:{gsite:{ovary:2.4,tube:0.1,endometrium:0.05,myometrium:0.03,cervix:0.03,vulvovag:0.02,poc:0.02},
+           gcell:{signet:2.4,mucinous:1.2,srbc:0.8,endometrioid:0.05,clear:0.1},
+           garch:{cords:1.4,nested:1.0,solid:0.8,glandular:0.6,cribriform:0.2,cystic:0.2},
+           gatypia:{high:1.2,mild:1.0,bland:0.3},
+           gstroma:{ovarian:1.8,fibromatous:1.4,desmoplastic:1.2,none:0.3},
+           gclue:{none:1.0,intravascular:1.1,dirtynecrosis:0.3},
+           ghist:{priorca:2.6,virilisation:1.4,none:0.35}}},
+      ln:{prior:0.4,
+        f:{lnpattern:{metastaticdeposit:2.4,sinusoidal:1.0,preserved:0.4},
+           lncell:{epithelial:2.2,smalllymph:0.1},
+           lnhist:{knownca:2.6,noneln:0.3}}}
+    }
+  },
+  {
+    id:"met_lungadeno", name:"Metastatic adenocarcinoma of lung",
+    morph:"Circumscribed deposits of glandular or solid tumour with a sharp interface, often multiple, and without an in situ component in the receiving organ.",
+    mol:"EGFR, KRAS and ALK alterations follow the primary. TTF1 and napsin A carry the lineage.",
+    base:{age:{peds:0.02,ya:0.3,mid:1.2,old:1.3}, necrosis:{present:1.2,absent:0.6}, mitoses:{brisk:1.2,low:0.5}},
+    stains:{ttf1:0.8,napsin:0.75,ck7:0.95,panck:0.97,ck20:0.05,cdx2:0.06,satb2:0.03,
+            pax8:0.05,wt1n:0.05,er:0.05,pr:0.03,gata3:0.05,trps1:0.05,p53:0.4,
+            gcdfp15:0.02,mammaglobin:0.02,inhibin:0.02,calretinin:0.05,sox10:0.03},
+    targets:{
+      cns:{prior:0.9,
+        f:{cnsloc:{cerebralhemi:1.6,cortical:1.4,posteriorfossa:1.0,midline:0.4,duralbased:0.3,sellar:0.1,pineal:0.1},
+           shape:{epithelioid:1.8,pleo:1.0,clear:0.5,spindle:0.2,srbc:0.3},
+           arch:{nested:1.4,sheets:1.2,papillary:0.6,fascicular:0.2,whorled:0.05},
+           nuclei:{pleomorphic:1.4,vesicular:1.2,finechromatin:0.5,bland:0.2},
+           cnsclue:{nonecns:1.4,microvascular:0.3,rosenthal:0.03,friedegg:0.03,perivascularrosettes:0.1},
+           hist:{priorca:3.0,none:0.3}}},
+      bone:{prior:0.7,
+        f:{bloc:{axial:1.8,metaphysis:0.8,diaphysis:0.7,epiphysis:0.4},
+           bpattern:{permeative:1.8,expansile:0.8,sclerotic:0.5,welldefined:0.2},
+           bcells:{pleo:1.4,histiocytoid:0.8,plasmacytoid:0.5,osteoblastic:0.1,chondrocytic:0.05},
+           bmatrix:{none:1.6,fibrous:0.5,osteoid:0.1,chondroid:0.05},
+           bgiant:{none:1.2,few:0.7,many:0.2},
+           bhist:{priorca:3.0,nightpain:1.0,none:0.2}}},
+      ln:{prior:0.6,
+        f:{lnpattern:{metastaticdeposit:2.4,sinusoidal:1.0,preserved:0.4},
+           lncell:{epithelial:2.2,smalllymph:0.1},
+           lnhist:{knownca:2.4,noneln:0.35}}},
+      hpb:{prior:0.7,
+        f:{hpbsite:{liver:2.2,pancreas:0.2,gallbladder:0.1,bileduct:0.1},
+           hpbcell:{biliary:1.0,mucinous:0.7,clear:0.5,hepatocytic:0.05,acinar:0.1},
+           hpbarch:{nodular:1.8,tubular:1.2,solid:1.0,trabecular:0.1,portal:0.2},
+           hpbclue:{none:1.4,bile:0.03,globules:0.05},
+           hpbhist:{priorca:3.0,incidental:0.8,cirrhosis:0.2,none:0.25}}}
+    }
+  },
+  {
+    id:"met_colorectal", name:"Metastatic colorectal adenocarcinoma",
+    morph:"Garland and cribriform glands lined by tall columnar cells with luminal dirty necrosis, and a sharply pushing or infiltrative edge.",
+    mol:"KRAS, APC and TP53 alterations. Mismatch repair status follows the primary.",
+    base:{age:{peds:0.02,ya:0.4,mid:1.3,old:1.2}, necrosis:{present:1.6,absent:0.4}, mitoses:{brisk:1.3,low:0.4}},
+    stains:{ck20:0.85,cdx2:0.9,satb2:0.85,ck7:0.2,panck:0.97,pax8:0.04,er:0.04,wt1n:0.03,
+            gata3:0.03,trps1:0.03,ttf1:0.03,napsin:0.02,p53:0.6,
+            gcdfp15:0.02,mammaglobin:0.02,inhibin:0.02,calretinin:0.03},
+    targets:{
+      hpb:{prior:1.1,
+        f:{hpbsite:{liver:2.4,pancreas:0.15,gallbladder:0.1,bileduct:0.15},
+           hpbcell:{biliary:1.0,mucinous:1.2,hepatocytic:0.03,acinar:0.05,clear:0.2},
+           hpbarch:{nodular:1.8,tubular:1.6,solid:0.6,trabecular:0.05,portal:0.2},
+           hpbclue:{none:1.2,bile:0.02,globules:0.03},
+           hpbhist:{priorca:3.0,incidental:0.8,cirrhosis:0.15,none:0.25}}},
+      ln:{prior:0.5,
+        f:{lnpattern:{metastaticdeposit:2.4,sinusoidal:0.9,preserved:0.4},
+           lncell:{epithelial:2.2,smalllymph:0.1},
+           lnhist:{knownca:2.4,noneln:0.35}}},
+      lung:{prior:0.6,
+        f:{lgsite:{peripheral:1.8,central:0.4,diffuse:0.5,pleura:0.3,mediastinum:0.2},
+           lgcell:{glandular:1.8,squamous:0.1,pneumocyte:0.05,neuroendocrine:0.05},
+           lgarch:{acinar:1.4,solid:0.8,lepidic:0.05,micropapillary:0.3,papillary:0.4},
+           lgclue:{mucin:1.2,none:1.0,keratin:0.1,honeycomb:0.05},
+           lghist:{priorca:3.0,screening:0.6,none:0.25}}}
+    }
+  }
+];
+
+/* Expansion. Each target becomes an entity in that module, and the primary's
+   immunoprofile is registered under the generated id. */
+const MET_PROFILES = {};
+for(const m of METASTASES){
+  for(const mod in m.targets){
+    const t = m.targets[mod];
+    const eid = m.id + "__" + mod;
+    const ent = {
+      id:eid, name:m.name, grp:"Metastatic", prior:(t.prior != null ? t.prior : 0.6),
+      mods:[mod], morph:m.morph, mol:m.mol,
+      f:Object.assign({}, m.base, t.f)
+    };
+    ENTITIES.push(ent);
+    /* EMAP is built earlier in the file, so a pushed entity is invisible to every
+       id-to-object lookup unless it is registered here as well. */
+    EMAP[eid] = ent;
+    MET_PROFILES[eid] = Object.assign({}, m.stains, t.stains || {});
+  }
+}
+
 function applyProfiles(src){
   for(const eid in src){
     for(const mid in src[eid]){
@@ -6052,6 +6229,7 @@ function applyProfiles(src){
 }
 applyProfiles(PROFILES);
 applyProfiles(PROFILE_PATCH);
+applyProfiles(MET_PROFILES);
 
 /* Guard against the same mistake returning: warn if any entity in a module has a
    broad lineage marker set high while a phenotypic neighbour has no value at all. */
@@ -6099,7 +6277,7 @@ const pPos = (mid, eid) => {
   return (eid in m.expect) ? m.expect[eid] : m.def;
 };
 
-const state = { answers:{}, results:{}, view:"question", whyOpen:false, order:[], redo:[] };
+const state = { answers:{}, results:{}, view:"question", whyOpen:false, order:[], redo:[], featOpen:false, featQuery:"" };
 const SKIPPED = new Set();
 
 /* Which organ module the case is in. Null until the site is known, and while
@@ -6264,6 +6442,7 @@ function render(){
   renderDdx(p);
   renderTrail();
   if(state.view === "question") renderQuestion(p);
+  else if(state.view === "extra") renderExtra(p);
   else renderPanel(p);
 }
 
@@ -6302,10 +6481,113 @@ function resultWord(r){
   return r.loc && r.value!=="neg" ? `${w}, ${r.loc}` : w;
 }
 
+/* ------------------------------------------------------------
+   Free feature entry. The flow stops once the panel is worth
+   building, so most features are never put to the user. This
+   lets a feature that was seen down the microscope be entered
+   directly. It records an ordinary step, so Back undoes it and
+   the reasoning trace shows it like any other answer.
+   ------------------------------------------------------------ */
+function featureItems(){
+  const out = [];
+  for(const q of moduleQuestions()){
+    if(!q || q.id === "site") continue;
+    if(q.id in state.answers) continue;        // one value per feature
+    for(const [oid,label] of q.opts){
+      out.push({qid:q.id, oid, label, group:(q.short || q.text)});
+    }
+  }
+  out.sort((a,b)=> a.label.localeCompare(b.label));
+  return out;
+}
+function featurePickerHTML(){
+  if(!state.featOpen){
+    return `<div><button class="whybtn" id="featOpenBtn">+ Add a feature the tool has not asked about</button></div>`;
+  }
+  const qy = state.featQuery.trim().toLowerCase();
+  const items = featureItems().filter(it =>
+    !qy || it.label.toLowerCase().includes(qy) || it.group.toLowerCase().includes(qy));
+  const rows = items.slice(0,60).map(it =>
+    `<button class="featrow" data-q="${it.qid}" data-o="${it.oid}">
+       <span>${esc(it.label)}</span><span class="featgrp">${esc(it.group)}</span>
+     </button>`).join("");
+  return `
+    <div class="featbox">
+      <input id="featQuery" class="featinput" type="text" autocomplete="off"
+             placeholder="Type to filter, or scroll the list" value="${esc(state.featQuery)}">
+      <div class="featlist">${rows || `<div class="featempty">Nothing matches that.</div>`}</div>
+      <div class="featfoot">
+        <span>${items.length} feature${items.length===1?"":"s"} available</span>
+        <button class="whybtn" id="featCloseBtn">Done</button>
+      </div>
+    </div>`;
+}
+function wireFeaturePicker(){
+  const ob = $("featOpenBtn");
+  if(ob){ ob.onclick = () => { state.featOpen = true; state.featQuery = ""; render(); }; return; }
+  const cb = $("featCloseBtn");
+  if(cb) cb.onclick = () => { state.featOpen = false; state.featQuery = ""; render(); };
+  const inp = $("featQuery");
+  if(inp){
+    inp.oninput = () => {
+      state.featQuery = inp.value;
+      const box = document.querySelector(".featbox");
+      const sel = box ? box.querySelector(".featlist") : null;
+      if(sel){
+        const qy = state.featQuery.trim().toLowerCase();
+        const items = featureItems().filter(it =>
+          !qy || it.label.toLowerCase().includes(qy) || it.group.toLowerCase().includes(qy));
+        sel.innerHTML = items.slice(0,60).map(it =>
+          `<button class="featrow" data-q="${it.qid}" data-o="${it.oid}">
+             <span>${esc(it.label)}</span><span class="featgrp">${esc(it.group)}</span>
+           </button>`).join("") || `<div class="featempty">Nothing matches that.</div>`;
+        wireFeatureRows();
+      }
+    };
+    inp.focus();
+    inp.setSelectionRange(inp.value.length, inp.value.length);
+  }
+  wireFeatureRows();
+}
+function wireFeatureRows(){
+  document.querySelectorAll(".featrow").forEach(b => {
+    b.onclick = () => {
+      /* stays open so several features can be added in one pass */
+      state.featQuery = "";
+      record({t:"q", id:b.dataset.q, value:b.dataset.o});
+      state.featOpen = true;
+      render();
+    };
+  });
+}
+
+/* Last step before the panel. The flow asks only the features that separate the
+   differential, so most are never put to the user. This is where anything else
+   seen down the microscope goes in. */
+function renderExtra(p){
+  const added = Object.keys(state.answers).length;
+  state.featOpen = true;
+  $("mainCard").innerHTML = `
+    ${navBar()}
+    <div class="eyebrow">${activeModule()?esc(MODULES[activeModule()].name)+" — ":""}anything else</div>
+    <h2 class="qtext">Is there a feature the tool did not ask about?</h2>
+    <div style="color:var(--muted);font-size:13.5px">
+      ${added} feature${added===1?"":"s"} recorded. The questions are chosen for how much they
+      separate the differential, so most were never put to you. Add anything else you saw, or go
+      straight to the panel.</div>
+    ${featurePickerHTML()}
+    <div class="actions">
+      <button id="toPanelFinal">Build the IHC panel</button>
+    </div>`;
+  wireNav();
+  wireFeaturePicker();
+  $("toPanelFinal").onclick = () => { state.featOpen=false; state.featQuery=""; state.view="panel"; render(); };
+}
+
 function renderQuestion(p){
   const q = nextQuestion(p);
   const answered = Object.keys(state.answers).length;
-  if(!q){ state.view="panel"; renderPanel(p); return; }
+  if(!q){ state.view="extra"; renderExtra(p); return; }
   const remaining = moduleQuestions().filter(x=>x && !(x.id in state.answers) && !SKIPPED.has(x.id)).length;
   const gainNote = answered ? `Selected from ${remaining} remaining features as the one that most separates the current differential.` : "";
   $("mainCard").innerHTML = `
@@ -6329,7 +6611,7 @@ function renderQuestion(p){
   });
   $("skipBtn").onclick=()=>{ record({t:"s", id:q.id}); render(); };
   $("whyBtn").onclick=()=>{ state.whyOpen=!state.whyOpen; render(); };
-  const tp=$("toPanel"); if(answered>=3) tp.onclick=()=>{ state.view="panel"; render(); };
+  const tp=$("toPanel"); if(answered>=3) tp.onclick=()=>{ state.view="extra"; render(); };
 }
 
 function whyBox(q,p){
