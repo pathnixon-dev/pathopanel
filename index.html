@@ -186,21 +186,6 @@ header{
 .frontnote{font-size:14.5px;color:var(--muted);margin-top:26px;max-width:62ch}
 #installPanel{display:none;margin-top:28px;max-width:62ch;background:var(--panel);
   border:1px solid var(--line);border-left:3px solid var(--hem);border-radius:0;padding:16px 18px}
-.featbox{border:1px solid var(--line);background:var(--panel);border-radius:var(--r);
-  margin-top:10px;overflow:hidden}
-.featinput{width:100%;border:0;border-bottom:1px solid var(--line);padding:11px 13px;
-  font-size:15px;font-family:inherit;color:var(--ink);background:var(--panel);outline:none}
-.featinput:focus{border-bottom-color:var(--hem)}
-.featlist{max-height:260px;overflow-y:auto}
-.featrow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;width:100%;
-  text-align:left;background:none;border:0;border-bottom:1px solid var(--slide);
-  padding:9px 13px;font-size:14.5px;font-family:inherit;color:var(--ink);cursor:pointer}
-.featrow:hover{background:var(--hem-soft)}
-.featgrp{font-size:12px;color:var(--muted);white-space:nowrap;text-transform:uppercase;
-  letter-spacing:.04em}
-.featempty{padding:14px 13px;font-size:14px;color:var(--muted)}
-.featfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;
-  padding:8px 13px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
 #installPanel h3{margin:0 0 6px;font-size:16px;font-weight:600;color:var(--ink)}
 #installPanel p{margin:0;font-size:14.5px;color:var(--muted);line-height:1.55}
 #installPanel ol{margin:10px 0 0;padding-left:20px;font-size:14.5px;color:var(--muted);line-height:1.7}
@@ -6277,7 +6262,7 @@ const pPos = (mid, eid) => {
   return (eid in m.expect) ? m.expect[eid] : m.def;
 };
 
-const state = { answers:{}, results:{}, view:"question", whyOpen:false, order:[], redo:[], featOpen:false, featQuery:"" };
+const state = { answers:{}, results:{}, view:"question", whyOpen:false, order:[], redo:[] };
 const SKIPPED = new Set();
 
 /* Which organ module the case is in. Null until the site is known, and while
@@ -6442,7 +6427,6 @@ function render(){
   renderDdx(p);
   renderTrail();
   if(state.view === "question") renderQuestion(p);
-  else if(state.view === "extra") renderExtra(p);
   else renderPanel(p);
 }
 
@@ -6481,113 +6465,10 @@ function resultWord(r){
   return r.loc && r.value!=="neg" ? `${w}, ${r.loc}` : w;
 }
 
-/* ------------------------------------------------------------
-   Free feature entry. The flow stops once the panel is worth
-   building, so most features are never put to the user. This
-   lets a feature that was seen down the microscope be entered
-   directly. It records an ordinary step, so Back undoes it and
-   the reasoning trace shows it like any other answer.
-   ------------------------------------------------------------ */
-function featureItems(){
-  const out = [];
-  for(const q of moduleQuestions()){
-    if(!q || q.id === "site") continue;
-    if(q.id in state.answers) continue;        // one value per feature
-    for(const [oid,label] of q.opts){
-      out.push({qid:q.id, oid, label, group:(q.short || q.text)});
-    }
-  }
-  out.sort((a,b)=> a.label.localeCompare(b.label));
-  return out;
-}
-function featurePickerHTML(){
-  if(!state.featOpen){
-    return `<div><button class="whybtn" id="featOpenBtn">+ Add a feature the tool has not asked about</button></div>`;
-  }
-  const qy = state.featQuery.trim().toLowerCase();
-  const items = featureItems().filter(it =>
-    !qy || it.label.toLowerCase().includes(qy) || it.group.toLowerCase().includes(qy));
-  const rows = items.slice(0,60).map(it =>
-    `<button class="featrow" data-q="${it.qid}" data-o="${it.oid}">
-       <span>${esc(it.label)}</span><span class="featgrp">${esc(it.group)}</span>
-     </button>`).join("");
-  return `
-    <div class="featbox">
-      <input id="featQuery" class="featinput" type="text" autocomplete="off"
-             placeholder="Type to filter, or scroll the list" value="${esc(state.featQuery)}">
-      <div class="featlist">${rows || `<div class="featempty">Nothing matches that.</div>`}</div>
-      <div class="featfoot">
-        <span>${items.length} feature${items.length===1?"":"s"} available</span>
-        <button class="whybtn" id="featCloseBtn">Done</button>
-      </div>
-    </div>`;
-}
-function wireFeaturePicker(){
-  const ob = $("featOpenBtn");
-  if(ob){ ob.onclick = () => { state.featOpen = true; state.featQuery = ""; render(); }; return; }
-  const cb = $("featCloseBtn");
-  if(cb) cb.onclick = () => { state.featOpen = false; state.featQuery = ""; render(); };
-  const inp = $("featQuery");
-  if(inp){
-    inp.oninput = () => {
-      state.featQuery = inp.value;
-      const box = document.querySelector(".featbox");
-      const sel = box ? box.querySelector(".featlist") : null;
-      if(sel){
-        const qy = state.featQuery.trim().toLowerCase();
-        const items = featureItems().filter(it =>
-          !qy || it.label.toLowerCase().includes(qy) || it.group.toLowerCase().includes(qy));
-        sel.innerHTML = items.slice(0,60).map(it =>
-          `<button class="featrow" data-q="${it.qid}" data-o="${it.oid}">
-             <span>${esc(it.label)}</span><span class="featgrp">${esc(it.group)}</span>
-           </button>`).join("") || `<div class="featempty">Nothing matches that.</div>`;
-        wireFeatureRows();
-      }
-    };
-    inp.focus();
-    inp.setSelectionRange(inp.value.length, inp.value.length);
-  }
-  wireFeatureRows();
-}
-function wireFeatureRows(){
-  document.querySelectorAll(".featrow").forEach(b => {
-    b.onclick = () => {
-      /* stays open so several features can be added in one pass */
-      state.featQuery = "";
-      record({t:"q", id:b.dataset.q, value:b.dataset.o});
-      state.featOpen = true;
-      render();
-    };
-  });
-}
-
-/* Last step before the panel. The flow asks only the features that separate the
-   differential, so most are never put to the user. This is where anything else
-   seen down the microscope goes in. */
-function renderExtra(p){
-  const added = Object.keys(state.answers).length;
-  state.featOpen = true;
-  $("mainCard").innerHTML = `
-    ${navBar()}
-    <div class="eyebrow">${activeModule()?esc(MODULES[activeModule()].name)+" — ":""}anything else</div>
-    <h2 class="qtext">Is there a feature the tool did not ask about?</h2>
-    <div style="color:var(--muted);font-size:13.5px">
-      ${added} feature${added===1?"":"s"} recorded. The questions are chosen for how much they
-      separate the differential, so most were never put to you. Add anything else you saw, or go
-      straight to the panel.</div>
-    ${featurePickerHTML()}
-    <div class="actions">
-      <button id="toPanelFinal">Build the IHC panel</button>
-    </div>`;
-  wireNav();
-  wireFeaturePicker();
-  $("toPanelFinal").onclick = () => { state.featOpen=false; state.featQuery=""; state.view="panel"; render(); };
-}
-
 function renderQuestion(p){
   const q = nextQuestion(p);
   const answered = Object.keys(state.answers).length;
-  if(!q){ state.view="extra"; renderExtra(p); return; }
+  if(!q){ state.view="panel"; renderPanel(p); return; }
   const remaining = moduleQuestions().filter(x=>x && !(x.id in state.answers) && !SKIPPED.has(x.id)).length;
   const gainNote = answered ? `Selected from ${remaining} remaining features as the one that most separates the current differential.` : "";
   $("mainCard").innerHTML = `
@@ -6611,7 +6492,7 @@ function renderQuestion(p){
   });
   $("skipBtn").onclick=()=>{ record({t:"s", id:q.id}); render(); };
   $("whyBtn").onclick=()=>{ state.whyOpen=!state.whyOpen; render(); };
-  const tp=$("toPanel"); if(answered>=3) tp.onclick=()=>{ state.view="extra"; render(); };
+  const tp=$("toPanel"); if(answered>=3) tp.onclick=()=>{ state.view="panel"; render(); };
 }
 
 function whyBox(q,p){
